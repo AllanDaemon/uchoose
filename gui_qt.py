@@ -41,12 +41,13 @@ class UOR(QtWidgets.QWidget):
 		icon_size = QtCore.QSize(*ICON_SIZE)
 		self.entries = []
 		for i, (name, icon, _, _) in enumerate(self.browser_list):
-			print("QT:", name, icon)
+			print("QT:", i, name, icon)
 
 			icon = QtGui.QIcon.fromTheme(icon)
 			btn = QtWidgets.QPushButton(icon, name, self)
 			btn.setIconSize(icon_size)
 			btn.setDefault(i == self.default)
+			btn.clicked.connect(lambda state=None, idx=i: self.chosen(idx))
 
 			self.entries.append(btn)
 			self.layout.addWidget(btn)
@@ -70,7 +71,9 @@ class UOR(QtWidgets.QWidget):
 		if event.key() == QtCore.Qt.Key_Q:
 			print("KEY Q")
 			self.app.exit()
-		
+
+	def chosen(self, index):
+		print("CHOSEN", index)
 
 # https://stackoverflow.com/questions/4938723/what-is-the-correct-way-to-make-my-pyqt-application-quit-when-killed-from-the-co
 class Application(QtWidgets.QApplication):
