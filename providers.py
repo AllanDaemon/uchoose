@@ -32,7 +32,7 @@ def get_browser_desktop_list():
 
 if __name__=='__main__':
 	l = get_browser_list()
-	for n,i,d in l: print(n, i, d.filename, sep='\t')
+	for n,i,e,d in l: print(n, i, d.filename, e, sep='\t')
 	name,icon,de = l[0]
 
 __all__ = ['get_browser_list']
