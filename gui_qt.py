@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import signal
 from PySide2 import QtCore, QtWidgets, QtGui
 
 FONT_SIZE = 14
@@ -61,8 +62,29 @@ class UOR(QtWidgets.QWidget):
 		win.moveCenter(screen_center)
 		self.move(win.topLeft())
 
+	def keyPressEvent(self, event):
+		print('EV:', event.text(), event)
+		if event.matches(QtGui.QKeySequence.Cancel):
+			print("Key CANCEL")
+			self.app.exit()
+		if event.key() == QtCore.Qt.Key_Q:
+			print("KEY Q")
+			self.app.exit()
+		
+
+# https://stackoverflow.com/questions/4938723/what-is-the-correct-way-to-make-my-pyqt-application-quit-when-killed-from-the-co
+class Application(QtWidgets.QApplication):
+	'Allow catch SIGTERM and etc'
+	def event(self, e):
+		return QtWidgets.QApplication.event(self, e)
+
 def gui_qt(url, browser_list, default):
-	app = QtWidgets.QApplication()
+	# app = QtWidgets.QApplication()
+	app = Application()
+
+	def quit_handler(*args): print('BYE'); app.quit()
+	signal.signal(signal.SIGINT, quit_handler)
+	signal.signal(signal.SIGTERM, quit_handler)
 
 	widget = UOR(url, browser_list, default)
 
