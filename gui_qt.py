@@ -26,9 +26,7 @@ class UOR(QtWidgets.QWidget):
 		for name, icon, _, _ in self.browser_list:
 			print("QT:", name, icon)
 
-			icon = QtGui.QIcon('/usr/share/icons/hicolor/256x256/apps/firefox.png')
-			icon = QtGui.QIcon('/usr/share/icons/hicolor/256x256/apps/google-chrome-beta.png')
-
+			icon = QtGui.QIcon.fromTheme(icon)
 			btn = QtWidgets.QPushButton(icon, name, self)
 
 			self.entries.append(btn)
