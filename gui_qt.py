@@ -24,11 +24,17 @@ class UOR(QtWidgets.QWidget):
 		self.layout.setContentsMargins(FONT_SIZE*2, FONT_SIZE*2, FONT_SIZE*2, FONT_SIZE*2)
 		self.setLayout(self.layout)
 
-		url = self.url_label = QtWidgets.QLabel(self.url)
-		print('Content Margins:', url.getContentsMargins())
+		self.url_label = QtWidgets.QLabel(self.url)
+		# self.url_label.setFrameStyle(QtWidgets.QFrame.Box)
+		# self.url_label.setFrameStyle(QtWidgets.QFrame.StyledPanel)
+		line = QtWidgets.QFrame()
+		line.setFrameShape(QtWidgets.QFrame.HLine)
+
 		self.layout.addSpacing(FONT_SIZE)
 		self.layout.addWidget(self.url_label)
-		self.layout.addSpacing(FONT_SIZE*2)
+		self.layout.addSpacing(FONT_SIZE)
+		self.layout.addWidget(line)
+		self.layout.addSpacing(FONT_SIZE)
 
 
 		icon_size = QtCore.QSize(*ICON_SIZE)
