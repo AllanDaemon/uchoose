@@ -29,4 +29,4 @@ def cli(url, browser_list, default=0):
 	choice = get_choice(browser_list)
 	if choice is None: choice = default
 
-	return choice, browser_list[choice]
+	return choice

@@ -13,6 +13,7 @@ class UOR(QtWidgets.QWidget):
 		self.browser_list = browser_list
 		self.default = default
 		self.app = QtCore.QCoreApplication.instance()
+		self.choice = None
 
 		self.init_ui()
 		self.show()
@@ -75,7 +76,6 @@ class UOR(QtWidgets.QWidget):
 	def chosen(self, index):
 		print("CHOSEN", index)
 		self.choice = index
-		self.choice = index, self.browser_list[index]
 		self.app.quit()
 
 
