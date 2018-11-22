@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+#@TODO: Use colors/bold
+#@TODO: use ncurses or something alike
+
 def get_choice(browser_list):
 	choice = input(f'({browser_list[0].name}): ')
 	
@@ -21,7 +24,7 @@ def cli(url, browser_list, default=0):
 	print(f"Open: {url}")
 
 	for i, b in enumerate(browser_list):
-		print(f"\t{i}  {b.name}")
+		print(f"  {'*' if i==default else ' '}{i}  {b.name}")
 	
 	choice = get_choice(browser_list)
 	if choice is None: choice = default
