@@ -5,7 +5,7 @@ from sys import argv
 import shlex
 
 DEFAULT = 0
-FORK = False
+FORK = True
 
 
 # https://developer.gnome.org/integration-guide/stable/desktop-files.html.en#tb-exec-params
@@ -19,24 +19,23 @@ def execute(name:str, exec_cmd:str, url:str):
 	print(f"EXECUTING  {exec_cmd!r} @ {url!r}")
 
 	cmd = shlex.split(exec_cmd)
-	print("	PRE:", repr(cmd))
-	
+	print("	PRE:", repr(cmd))	
 	cmd = [ param_subs(arg, url) for arg in cmd]
 	if r'%u' not in exec_cmd.lower(): cmd.append(url)
 	print("	CMD:", repr(cmd))
-
 	return exec_(cmd)
 
 def exec_(cmd, fork=FORK):
 	print("EXEC_", cmd)
-	if not fork:
-		pass
-		#os.execlp(*cmd)
-	else:
-		pass
-		#os.spawnlp(os.P_NOWAIT, *cmd)
 
-	assert False, "BUG"
+	if not fork:
+		os.execvp(cmd[0], cmd)
+		# exec never returns
+		assert False, "BUG"
+	else:
+		os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
+	exit()
+
 
 
 
@@ -81,8 +80,8 @@ def main():
 	# for n,i,e,d in browser_list: print(n, i, repr(e), sep='\t') # dbg
 
 	########
-	for n,_,e,_ in browser_list: execute(n, e, url)
-	exit()
+	#for n,_,e,_ in browser_list: execute(n, e, url)
+	#exit()
 	########
 
 	choice = chooser(url, browser_list, DEFAULT)
