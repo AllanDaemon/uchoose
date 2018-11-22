@@ -2,7 +2,7 @@
 
 from PySide2 import QtCore, QtWidgets, QtGui
 
-FONT_SIZE = 20
+FONT_SIZE = 14
 ICON_SIZE = 32, 32
 
 class UOR(QtWidgets.QWidget):
@@ -25,12 +25,14 @@ class UOR(QtWidgets.QWidget):
 		self.url = QtWidgets.QLabel(self.url)
 		self.layout.addWidget(self.url)
 
+		icon_size = QtCore.QSize(*ICON_SIZE)
 		self.entries = []
 		for name, icon, _, _ in self.browser_list:
 			print("QT:", name, icon)
 
 			icon = QtGui.QIcon.fromTheme(icon)
 			btn = QtWidgets.QPushButton(icon, name, self)
+			btn.setIconSize(icon_size)
 
 			self.entries.append(btn)
 			self.layout.addWidget(btn)
