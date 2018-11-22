@@ -11,11 +11,14 @@ class UOR(QtWidgets.QWidget):
 		self.url = url
 		self.browser_list = browser_list
 		self.default = default
+		self.app = QtCore.QCoreApplication.instance()
 
 		self.init_ui()
 		self.show()
 
 	def init_ui(self):
+		self.app.setFont(QtGui.QFont(None, FONT_SIZE))
+
 		self.layout = QtWidgets.QVBoxLayout()
 		self.setLayout(self.layout)
 
