@@ -11,6 +11,9 @@ APPLICATIONS_DIRS = list(map(Path, APPLICATIONS_DIRS))
 
 BrowserEntry = namedtuple('BrowserEntry', ['name', 'icon', 'exec', 'de'])
 
+#@TODO: check later this
+## https://stackoverflow.com/questions/5440050/find-the-default-application-name-for-a-given-file
+
 
 def get_browser_list():
 	de_list = get_browser_desktop_list()
