@@ -34,7 +34,17 @@ class UOR(QtWidgets.QWidget):
 
 			self.entries.append(btn)
 			self.layout.addWidget(btn)
+		
+		self.center()
 
+	def center(self):
+		desktop = self.app.desktop()
+		screen_num = desktop.screenNumber(desktop.cursor().pos())
+		screen_center = desktop.screenGeometry(screen_num).center()
+		self.adjustSize()
+		win = self.frameGeometry()
+		win.moveCenter(screen_center)
+		self.move(win.topLeft())
 
 def gui_qt(url, browser_list, default):
 	app = QtWidgets.QApplication()
