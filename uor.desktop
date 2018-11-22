@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=UOR
+Name[en_US]=UOR
+GenericName=URL Open Redirect
+GenericName[en_US]=URL Open Redirect
+Comment=Select a browser to open a URL
+Comment[en_US]=Select a browser to open a URL
+Icon=applications-internet
+Categories=Network;WebBrowser;
+Exec=/home/user/code/url-open-redirect/uor.py %U
+Terminal=false
