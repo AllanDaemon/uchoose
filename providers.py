@@ -9,7 +9,7 @@ from xdg.DesktopEntry import DesktopEntry
 APPLICATIONS_DIRS = ['/usr/share/applications']
 APPLICATIONS_DIRS = list(map(Path, APPLICATIONS_DIRS))
 
-BrowserEntry = namedtuple('BrowserEntry', ['name', 'icon', 'exec', 'de'])
+BrowserEntry = namedtuple('BrowserEntry', ['name', 'icon', 'cmd', 'de'])
 
 #@TODO: check later this
 ## https://stackoverflow.com/questions/5440050/find-the-default-application-name-for-a-given-file

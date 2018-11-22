@@ -1,10 +1,35 @@
 #!/usr/bin/python3
 
 from sys import argv
+import shlex
 
 DEFAULT = 0
 
-def is_terminal():
+# https://developer.gnome.org/integration-guide/stable/desktop-files.html.en#tb-exec-params
+def param_subs(arg:str, url:str) -> str:
+	if r'%u' in arg: arg = arg.replace(r'%u', url)
+	if r'%U' in arg: arg = arg.replace(r'%U', url)
+	if r'%k' in arg: arg = arg.replace(r'%k', url)
+	return arg
+
+def execute(name:str, exec_cmd:str, url:str):
+	print(f"EXECUTING  {exec_cmd!r} @ {url!r}")
+
+	cmd = shlex.split(exec_cmd)
+
+	print("	PRE:", repr(cmd))
+
+	cmd = [ param_subs(arg, url) for arg in cmd]
+
+	if r'%u' not in exec_cmd.lower(): cmd.append(url)
+
+	print("	CMD:", repr(cmd))
+	
+	return
+
+
+
+def is_terminal() -> bool:
 	import os
 	return os.isatty(0) and os.isatty(1)
 
