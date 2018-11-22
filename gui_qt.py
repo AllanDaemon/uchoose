@@ -74,6 +74,11 @@ class UOR(QtWidgets.QWidget):
 
 	def chosen(self, index):
 		print("CHOSEN", index)
+		self.choice = index
+		self.choice = index, self.browser_list[index]
+		self.app.quit()
+
+
 
 # https://stackoverflow.com/questions/4938723/what-is-the-correct-way-to-make-my-pyqt-application-quit-when-killed-from-the-co
 class Application(QtWidgets.QApplication):
@@ -91,6 +96,5 @@ def gui_qt(url, browser_list, default):
 
 	widget = UOR(url, browser_list, default)
 
-	import sys
-	sys.exit(app.exec_())
-	# return chosen
+	app.exec_()
+	return widget.choice
