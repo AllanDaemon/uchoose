@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import sys
+from sys import argv
 
 DEFAULT = 0
 
@@ -18,14 +18,20 @@ def main():
 
 	### Init and parsing
 
-	GUI = not is_terminal()
-	if "--gui" in sys.argv: GUI = True
-	if "--cli" in sys.argv: GUI = False
-	if "--no-gui" in sys.argv: GUI = False
-	if "--no-cli" in sys.argv: GUI = True
+	if len(argv) > 1:
+		for arg in argv[1:]:
+			if not arg.startswith('--'):
+				url = arg
+				break
 
-	GUI = True	# for DBG
+	GUI = not is_terminal()
+	if "--gui" in argv: GUI = True
+	if "--cli" in argv: GUI = False
+	if "--no-gui" in argv: GUI = False
+	if "--no-cli" in argv: GUI = True
+
 	GUI = False	# for DBG
+	GUI = True	# for DBG
 
 	if GUI: from gui_qt import gui_qt as interface
 	else:   from cli    import cli    as interface
