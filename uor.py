@@ -9,7 +9,7 @@ def is_terminal():
 	return os.isatty(0) and os.isatty(1)
 
 def help():
-	print(f"Usage: {sys.argv[0]} URL OPTIONS????")
+	print(f"Usage: {argv[0]} URL OPTIONS????")
 
 def main():
 	### for DBG
@@ -30,8 +30,8 @@ def main():
 	if "--no-gui" in argv: GUI = False
 	if "--no-cli" in argv: GUI = True
 
-	GUI = False	# for DBG
-	GUI = True	# for DBG
+	# GUI = False	# for DBG
+	# GUI = True	# for DBG
 
 	if GUI: from gui_qt import gui_qt as interface
 	else:   from cli    import cli    as interface
