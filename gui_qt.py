@@ -27,16 +27,17 @@ class UOR(QtWidgets.QWidget):
 
 		icon_size = QtCore.QSize(*ICON_SIZE)
 		self.entries = []
-		for name, icon, _, _ in self.browser_list:
+		for i, (name, icon, _, _) in enumerate(self.browser_list):
 			print("QT:", name, icon)
 
 			icon = QtGui.QIcon.fromTheme(icon)
 			btn = QtWidgets.QPushButton(icon, name, self)
 			btn.setIconSize(icon_size)
+			btn.setDefault(i == self.default)
 
 			self.entries.append(btn)
 			self.layout.addWidget(btn)
-		
+
 		self.center()
 
 	def center(self):
