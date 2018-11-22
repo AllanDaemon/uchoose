@@ -67,6 +67,12 @@ def main():
 	from providers import get_browser_list
 	browser_list = get_browser_list()
 	#for n,i,e,d in browser_list: print(n, i, d.filename, repr(e), sep='\t') # dbg
+	# for n,i,e,d in browser_list: print(n, i, repr(e), sep='\t') # dbg
+
+	########
+	for n,i,e,d in browser_list: execute(n, e, url)
+	exit()
+	########
 
 	choice = chooser(url, browser_list, DEFAULT)
 	if choice is None: exit()
@@ -75,6 +81,8 @@ def main():
 	print('-'*40)
 	print(f'URL:      ', url)
 	print(f'BROWSER:  ', choice, repr(browser.name))
+
+	execute(browser.name, browser.cmd, url)
 
 
 if __name__ == "__main__":
