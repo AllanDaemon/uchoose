@@ -1,35 +1,36 @@
 #!/usr/bin/python3
 
-import os
-from PySide2 import QtCore, QtWidgets, QtGui
+DEFAULT = 0
 
 def is_terminal():
 	import os
 	return os.isatty(0) and os.isatty(1)
 
-class UOR(QtWidgets.QWidget):
-	def __init__(self):
-		QtWidgets.QWidget.__init__(self)
-		self.layout = QtWidgets.QVBoxLayout()
-		self.setLayout(self.layout)
 
-		self.l0 = QtWidgets.QLabel(f"  0:  {os.isatty(0)}    ")
-		self.l1 = QtWidgets.QLabel(f"  1:  {os.isatty(1)}    ")
-		self.l2 = QtWidgets.QLabel(f"  2:  {os.isatty(2)}    ")
-		self.l3 = QtWidgets.QLabel(f"  3:  {os.isatty(3)}    ")
+def console_interface(url, browser_list, default):
+	from cli import cli
+	cli(url, browser_list)
 
-		self.layout.addWidget(self.l0)
-		self.layout.addWidget(self.l1)
-		self.layout.addWidget(self.l2)
-		self.layout.addWidget(self.l3)
+def gui_interface(url, browser_list, default):
+	from gui_qt import gui_qt
+	gui_qt(url, browser_list)
+
+
+def main():
+	url = 'http://example.com/this/is.a.url?all=right'
+	browser_list = []
+
+	if is_terminal():
+		browser = console_interface(url, browser_list, DEFAULT)
+		from gui_qt import gui_qt as interface
+	else:
+		browser = gui_interface(url, browser_list, DEFAULT)
+		from cli import cli as interface
+	
+	print('-'*40)
+	print(f'URL:', url)
+	print(f'Browser:', browser)
 
 
 if __name__ == "__main__":
-	import sys
-	app = QtWidgets.QApplication(sys.argv)
-
-	widget = UOR()
-	widget.show()
-
-	sys.exit(app.exec_())
-
+	main()
