@@ -34,13 +34,13 @@ def main():
 
 	from providers import get_browser_list
 	browser_list = get_browser_list()
-	for n,i,e,d in browser_list: print(n, i, d.filename, repr(e), sep='\t') # dbg
+	#for n,i,e,d in browser_list: print(n, i, d.filename, repr(e), sep='\t') # dbg
 
-	browser = interface(url, browser_list, DEFAULT)
+	choice, browser = interface(url, browser_list, DEFAULT)
 	
 	print('-'*40)
-	print(f'URL:', url)
-	print(f'Browser:', browser)
+	print(f'URL:      ', url)
+	print(f'BROWSER:  ', choice, repr(browser.name))
 
 
 if __name__ == "__main__":
