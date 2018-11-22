@@ -20,10 +20,16 @@ class UOR(QtWidgets.QWidget):
 		self.app.setFont(QtGui.QFont(None, FONT_SIZE))
 
 		self.layout = QtWidgets.QVBoxLayout()
+		self.layout.setSpacing(FONT_SIZE)	# default: 6
+		self.layout.setContentsMargins(FONT_SIZE*2, FONT_SIZE*2, FONT_SIZE*2, FONT_SIZE*2)
 		self.setLayout(self.layout)
 
-		self.url = QtWidgets.QLabel(self.url)
-		self.layout.addWidget(self.url)
+		url = self.url_label = QtWidgets.QLabel(self.url)
+		print('Content Margins:', url.getContentsMargins())
+		self.layout.addSpacing(FONT_SIZE)
+		self.layout.addWidget(self.url_label)
+		self.layout.addSpacing(FONT_SIZE*2)
+
 
 		icon_size = QtCore.QSize(*ICON_SIZE)
 		self.entries = []
