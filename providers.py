@@ -39,3 +39,5 @@ if __name__=='__main__':
 	name,icon,de = l[0]
 
 __all__ = ['get_browser_list']
+
+# vim: ts=4:sw=4:noet

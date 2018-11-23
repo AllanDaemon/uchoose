@@ -19,7 +19,7 @@ def execute(name:str, exec_cmd:str, url:str):
 	print(f"EXECUTING  {exec_cmd!r} @ {url!r}")
 
 	cmd = shlex.split(exec_cmd)
-	print("	PRE:", repr(cmd))	
+	print("	PRE:", repr(cmd))
 	cmd = [ param_subs(arg, url) for arg in cmd]
 	if r'%u' not in exec_cmd.lower(): cmd.append(url)
 	print("	CMD:", repr(cmd))
@@ -87,7 +87,7 @@ def main():
 	choice = chooser(url, browser_list, DEFAULT)
 	if choice is None: exit()
 	browser = browser_list[choice]
-	
+
 	print('-'*40)
 	print(f'URL:      ', url)
 	print(f'BROWSER:  ', choice, repr(browser.name))
@@ -97,3 +97,5 @@ def main():
 
 if __name__ == "__main__":
 	main()
+
+# vim: ts=4:sw=4:noet

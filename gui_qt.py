@@ -98,3 +98,5 @@ def gui_qt(url, browser_list, default):
 
 	app.exec_()
 	return widget.choice
+
+# vim: ts=4:sw=4:noet
