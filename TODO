@@ -1,0 +1,17 @@
+
+* Create an installation script
+* add other desktop folders
+
+* add shortcuts to gui window
+
+* Add option 'Copy to clipboard'
+
+* give preference in order
+
+* clean up code
+
+* check todos in code
+
+* use a better CLI interface (NCURSES)
+
+* add other desktop providers
