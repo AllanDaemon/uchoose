@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import argparse
 import os
 from sys import argv
 import shlex
@@ -53,17 +54,17 @@ def main():
 
 	### Init and parsing
 
-	if len(argv) > 1:
-		for arg in argv[1:]:
-			if not arg.startswith('--'):
-				url = arg
-				break
-
 	GUI = not is_terminal()
-	if "--gui" in argv: GUI = True
-	if "--cli" in argv: GUI = False
-	if "--no-gui" in argv: GUI = False
-	if "--no-cli" in argv: GUI = True
+
+	parser = argparse.ArgumentParser()
+	grp = parser.add_mutually_exclusive_group()
+	grp.add_argument('--gui', action='store_true', default=GUI)
+	grp.add_argument('--cli', action='store_false', dest='gui')
+	parser.add_argument('url', default=url, nargs='?')
+
+	args = parser.parse_args()
+	url = args.url
+	GUI = args.gui
 
 	# GUI = False	# for DBG
 	# GUI = True	# for DBG
