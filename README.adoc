@@ -1,0 +1,15 @@
+= uchoose
+
+
+Let you choose the browser or action when openning a URL instead your "default browser" configured on the system, setting the uchoose as your new default browser (URL opener).
+
+It uses the Freedesktop XDG Desktop files and Python, so just work on GNU/Linux by now.
+
+Current interfaces:
+
+* CLI (basic)
+* QT
+
+== WIP
+
+This is work in progress
