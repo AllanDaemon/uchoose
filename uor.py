@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import argparse
 import os
 from sys import argv
 import shlex
@@ -19,7 +20,7 @@ def execute(name:str, exec_cmd:str, url:str):
 	print(f"EXECUTING  {exec_cmd!r} @ {url!r}")
 
 	cmd = shlex.split(exec_cmd)
-	print("	PRE:", repr(cmd))	
+	print("	PRE:", repr(cmd))
 	cmd = [ param_subs(arg, url) for arg in cmd]
 	if r'%u' not in exec_cmd.lower(): cmd.append(url)
 	print("	CMD:", repr(cmd))
@@ -53,17 +54,17 @@ def main():
 
 	### Init and parsing
 
-	if len(argv) > 1:
-		for arg in argv[1:]:
-			if not arg.startswith('--'):
-				url = arg
-				break
-
 	GUI = not is_terminal()
-	if "--gui" in argv: GUI = True
-	if "--cli" in argv: GUI = False
-	if "--no-gui" in argv: GUI = False
-	if "--no-cli" in argv: GUI = True
+
+	parser = argparse.ArgumentParser()
+	grp = parser.add_mutually_exclusive_group()
+	grp.add_argument('--gui', action='store_true', default=GUI)
+	grp.add_argument('--cli', action='store_false', dest='gui')
+	parser.add_argument('url', default=url, nargs='?')
+
+	args = parser.parse_args()
+	url = args.url
+	GUI = args.gui
 
 	# GUI = False	# for DBG
 	# GUI = True	# for DBG
@@ -87,7 +88,7 @@ def main():
 	choice = chooser(url, browser_list, DEFAULT)
 	if choice is None: exit()
 	browser = browser_list[choice]
-	
+
 	print('-'*40)
 	print(f'URL:      ', url)
 	print(f'BROWSER:  ', choice, repr(browser.name))
@@ -97,3 +98,5 @@ def main():
 
 if __name__ == "__main__":
 	main()
+
+# vim: ts=4:sw=4:noet
