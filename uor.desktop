@@ -8,5 +8,5 @@ Comment=Select a browser to open a URL
 Comment[en_US]=Select a browser to open a URL
 Icon=applications-internet
 Categories=Network;WebBrowser;
-Exec=/home/user/code/url-open-redirect/uor.py %U
+Exec=$HOME/bin/uor %U
 Terminal=false
