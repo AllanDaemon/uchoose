@@ -15,3 +15,6 @@ gui_qt::~gui_qt()
 {
     delete ui;
 }
+
+void gui_qt::setupUi(){
+}

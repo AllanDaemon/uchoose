@@ -1,7 +1,10 @@
-#ifndef GUI_QT_H
-#define GUI_QT_H
+#pragma once
 
 #include <QMainWindow>
+
+#ifndef FONT_SIZE
+#define FONT_SIZE 14
+#endif
 
 namespace Ui {
 class gui_qt;
@@ -19,6 +22,7 @@ public:
     QString url;
 private:
     Ui::gui_qt *ui;
+
+    void setupUi();
 };
 
-#endif // GUI_QT_H
