@@ -1,14 +1,18 @@
 #pragma once
 
+#include <iostream>
 #include <QMainWindow>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QFrame>
+#include <QSize>
+#include <QIcon>
+#include <QPushButton>
 
 #ifndef FONT_SIZE
 #define FONT_SIZE 14
 #endif
 
-namespace Ui {
-class gui_qt;
-}
 
 class gui_qt : public QMainWindow
 {
@@ -20,9 +24,9 @@ public:
     ~gui_qt();
 
     QString url;
-private:
-    Ui::gui_qt *ui;
 
-    void setupUi();
+private:
+    void init_ui();
+//    QBoxLayout layout;
 };
 

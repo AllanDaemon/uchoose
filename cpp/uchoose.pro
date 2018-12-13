@@ -33,8 +33,7 @@ HEADERS += \
         gui_qt.h \
         uchoose.h
 
-FORMS += \
-        gui_qt.ui
+FORMS +=
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
