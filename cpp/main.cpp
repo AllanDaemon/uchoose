@@ -1,3 +1,5 @@
+// vim: ts=4:sw=4:noet ft=cpp:
+
 #include <QApplication>
 
 #include "uchoose.h"
