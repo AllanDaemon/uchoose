@@ -35,8 +35,12 @@ def get_browser_desktop_list():
 
 if __name__=='__main__':
 	l = get_browser_list()
-	for n,i,e,d in l: print(n, i, d.filename, e, sep='\t')
-	name,icon,de = l[0]
+	# for n,i,e,d in l: print(n, i, d.filename, e, sep='\t')
+	# name,icon,de = l[0]
+	for n,i,e,d in l: print(f'{{"{n}",	"{i}",	"{e}"}},')
+	# from yaml import dump
+	# with open('providers.yaml','w') as f:
+		# dump([], f)
 
 __all__ = ['get_browser_list']
 
