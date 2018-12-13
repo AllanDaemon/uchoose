@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <QWidget>
+#include <QApplication>
+#include <QFont>
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QFrame>
@@ -23,9 +25,10 @@ public:
 	~gui_qt();
 
 	QString url;
+	QCoreApplication* app;
 
 private:
 	void init_ui();
-//    QBoxLayout layout;
+//	QBoxLayout layout;
 };
 
