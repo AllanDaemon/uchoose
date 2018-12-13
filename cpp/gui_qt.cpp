@@ -3,11 +3,16 @@
 
 #define FONT_2SIZE (FONT_SIZE*2)
 
-gui_qt::gui_qt(const char* url, QWidget *parent) :
+gui_qt::gui_qt(const char* url,
+			   std::list<BrowserEntry> browser_list,
+			   int _default = 0,
+			   QWidget *parent) :
 	QWidget(parent)
 {
-	this->url = QString(url);
 	this->app = QCoreApplication::instance();
+	this->url = QString(url);
+	this->browser_list = browser_list;
+	this->_default = _default;
 
 	this->init_ui();
 	this->show();
