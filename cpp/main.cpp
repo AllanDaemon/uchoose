@@ -5,10 +5,10 @@
 
 int main(int argc, char *argv[])
 {
-    char* url = url_default;
-    QApplication a(argc, argv);
-    gui_qt w(url);
-    w.show();
+	char* url = url_default;
+	QApplication a(argc, argv);
+	gui_qt w(url);
+	w.show();
 
-    return a.exec();
+	return a.exec();
 }

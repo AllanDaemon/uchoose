@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT	+= core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -26,12 +26,12 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 CONFIG += c++1z
 
 SOURCES += \
-        main.cpp \
-        gui_qt.cpp
+	main.cpp \
+	gui_qt.cpp
 
 HEADERS += \
-        gui_qt.h \
-        uchoose.h
+	gui_qt.h \
+	uchoose.h
 
 FORMS +=
 
