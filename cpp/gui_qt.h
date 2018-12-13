@@ -16,6 +16,10 @@
 #define FONT_SIZE 14
 #endif
 
+#ifndef ICON_SIZE
+#define ICON_SIZE 32, 32
+#endif
+
 
 class gui_qt : public QWidget
 {
@@ -23,19 +27,20 @@ class gui_qt : public QWidget
 
 public:
 	explicit gui_qt(const char *url,
-					std::list<BrowserEntry> browser_list,
+					BrowserList& browser_list,
 					int _default,
 					QWidget *parent = nullptr);
 	~gui_qt();
 
 	QCoreApplication* app;
 	QString url;
-	std::list<BrowserEntry> browser_list;
+	BrowserList* browser_list;
 	int _default = 0;
 
 
 private:
 	void init_ui();
+	void chosen(int index);
 //	QBoxLayout layout;
 };
 

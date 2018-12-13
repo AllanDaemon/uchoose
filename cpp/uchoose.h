@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef __cplusplus
-#include <list>
+#include <vector>
 
 extern "C" {
 #endif
@@ -20,7 +20,9 @@ struct BrowserEntry {
 extern BrowserEntry entries[];
 
 #ifdef __cplusplus
-extern std::list<BrowserEntry> lentries;
+using BrowserList = std::vector<BrowserEntry>;
+
+extern BrowserList entries_list;
 
 }
 #endif

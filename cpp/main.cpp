@@ -1,5 +1,4 @@
 #include <QApplication>
-#include <list>
 
 #include "uchoose.h"
 #include "gui_qt.h"
@@ -15,7 +14,7 @@ BrowserEntry entries[] = {
 	{nullptr,				nullptr,				nullptr},
 };
 
-std::list<BrowserEntry> lentries = {
+BrowserList entries_list = {
 	{"Firefox",				"firefox",				"firefox %u"},
 	{"Falkon",				"falkon",				"falkon %u"},
 	{"Konqueror",			"konqueror",			"konqueror"},
@@ -31,7 +30,7 @@ int main(int argc, char *argv[])
 	char* url = url_default;
 
 	QApplication a(argc, argv);
-	gui_qt w(url, lentries, 0);
+	gui_qt w(url, entries_list, 0);
 	w.show();
 
 	return a.exec();
