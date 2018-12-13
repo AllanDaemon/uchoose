@@ -4,7 +4,7 @@
 #define FONT_2SIZE (FONT_SIZE*2)
 
 gui_qt::gui_qt(const char* url, QWidget *parent) :
-	QMainWindow(parent)
+    QWidget(parent)
 {
 	this->url = QString(url);
 	this->init_ui();
@@ -29,7 +29,6 @@ void gui_qt::init_ui()
 	layout->addSpacing(FONT_SIZE);
 
 	this->setLayout(layout);
-//    this->setCentralWidget(layout);
 
 }
 

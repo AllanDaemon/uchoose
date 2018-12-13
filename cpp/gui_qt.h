@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <QMainWindow>
+#include <QWidget>
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QFrame>
@@ -14,12 +14,11 @@
 #endif
 
 
-class gui_qt : public QMainWindow
+class gui_qt : public QWidget
 {
 	Q_OBJECT
 
 public:
-//    explicit gui_qt(QWidget *parent = nullptr);
 	explicit gui_qt(const char *url, QWidget *parent = nullptr);
 	~gui_qt();
 
