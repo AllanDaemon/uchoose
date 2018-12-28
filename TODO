@@ -1,5 +1,3 @@
-* RENAME project UOR (URL Opener Redirector) to uchoose (way better)
-
 * QT: set window title
 * Get windows focus
 * Check this also on GTK

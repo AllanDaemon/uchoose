@@ -6,7 +6,7 @@ from PySide2 import QtCore, QtWidgets, QtGui
 FONT_SIZE = 14
 ICON_SIZE = 32, 32
 
-class UOR(QtWidgets.QWidget):
+class Uchoose(QtWidgets.QWidget):
 	def __init__(self, url, browser_list, default):
 		QtWidgets.QWidget.__init__(self)
 		self.url = url
@@ -94,7 +94,7 @@ def gui_qt(url, browser_list, default):
 	signal.signal(signal.SIGINT, quit_handler)
 	signal.signal(signal.SIGTERM, quit_handler)
 
-	widget = UOR(url, browser_list, default)
+	widget = Uchoose(url, browser_list, default)
 
 	app.exec_()
 	return widget.choice

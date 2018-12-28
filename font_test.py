@@ -7,7 +7,7 @@ FONT_SIZE = 20
 ICON_SIZE = 32, 32
 
 
-class UOR(QtWidgets.QWidget):
+class Uchoose(QtWidgets.QWidget):
 	def __init__(self):
 		QtWidgets.QWidget.__init__(self)
 		self.app = QtCore.QCoreApplication.instance()
@@ -93,7 +93,7 @@ font = app.font()
 # app.setFont(font)
 app.setFont(QtGui.QFont(None, 20))
 
-widget = UOR()
+widget = Uchoose()
 widget.show()
 
 app.exec_()

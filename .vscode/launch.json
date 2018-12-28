@@ -8,14 +8,14 @@
 			"name": "Python: Project (Integrated Terminal)",
 			"type": "python",
 			"request": "launch",
-			"program": "${workspaceFolder}/uor.py",
+			"program": "${workspaceFolder}/uchoose.py",
 			"console": "integratedTerminal"
 		},
 		{
 			"name": "Python: Project GUI",
 			"type": "python",
 			"request": "launch",
-			"program": "${workspaceFolder}/uor.py",
+			"program": "${workspaceFolder}/uchoose.py",
 			"args": ["--gui"],
 			"console": "integratedTerminal"
 		},
@@ -23,7 +23,7 @@
 			"name": "Python: Project CLI",
 			"type": "python",
 			"request": "launch",
-			"program": "${workspaceFolder}/uor.py",
+			"program": "${workspaceFolder}/uchoose.py",
 			"args": ["--cli"],
 			"console": "integratedTerminal"
 		},

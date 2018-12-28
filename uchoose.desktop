@@ -1,12 +1,12 @@
 [Desktop Entry]
 Type=Application
-Name=UOR
-Name[en_US]=UOR
-GenericName=URL Open Redirect
-GenericName[en_US]=URL Open Redirect
+Name=uchoose
+Name[en_US]=uchoose
+GenericName=URL browser chooser
+GenericName[en_US]=URL browser chooser
 Comment=Select a browser to open a URL
 Comment[en_US]=Select a browser to open a URL
 Icon=applications-internet
 Categories=Network;WebBrowser;
-Exec=$HOME/bin/uor %U
+Exec=$HOME/bin/uchoose %U
 Terminal=false

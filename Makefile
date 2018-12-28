@@ -1,9 +1,9 @@
-BIN_FILE=uor
-DESKTOP_FILE=uor.desktop
+BIN_FILE=uchoose
+DESKTOP_FILE=uchoose.desktop
 
 
 install:
-	ln -sf $(PWD)/uor.py $(HOME)/bin/$(BIN_FILE)
+	ln -sf $(PWD)/uchoose.py $(HOME)/bin/$(BIN_FILE)
 	ln -sf $(PWD)/$(DESKTOP_FILE) $(HOME)/.local/share/applications/
 	kbuildsycoca5
 
