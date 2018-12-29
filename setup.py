@@ -50,7 +50,7 @@ setup(
 	zip_safe = False,
 	python_requires = '>=3.6',
 	packages = ['uchoose'],
-	scripts = ['uchoose/uchoose.py'],
+	scripts = ['uchoose/uchoose'],
 
 	install_requires = ['pyxdg'],
 	extras_require = {
