@@ -2,18 +2,26 @@
 
 from setuptools import setup
 from setuptools.command.install import install
+from setuptools.command.develop import develop
 from subprocess import check_call
 
 __version__ = '0.2'
 
-class PostInstallCommand(install):
+class InstallCommand(install):
 	def run(self):
-		print("PostInstallCommand::enter")
+		check_call(['notify-send', 'Command Install::enter'])
+		super().run()
+		check_call(['notify-send', 'Command Install::middle'])
 		check_call('kbuildsycoca5')
-		print("PostInstallCommand::middle")
-		install.run(self)
-		print("PostInstallCommand::exit")
+		check_call(['notify-send', 'Command Install::exit'])
 
+class DevelopCommand(develop):
+	def run(self):
+		check_call(['notify-send', 'Command Develop::enter'])
+		super().run()
+		check_call(['notify-send', 'Command Develop::middle'])
+		check_call('kbuildsycoca5')
+		check_call(['notify-send', 'Command Develop::exit'])
 
 setup(
 	name = 'uchoose',
@@ -72,5 +80,8 @@ setup(
 	data_files = [
 		('share/applications', ['org.allandaemon.uchoose.desktop'])
 	],
-	cmdclass = {'install': PostInstallCommand},
+	cmdclass = {
+		'install': InstallCommand,
+		'develop': DevelopCommand,
+	},
 )
