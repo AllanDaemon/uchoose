@@ -2,7 +2,7 @@
 
 import argparse
 import os
-from sys import argv
+from sys import argv, exit
 import shlex
 
 DEFAULT = 0
@@ -85,7 +85,10 @@ def main():
 	#exit()
 	########
 
-	choice = chooser(url, browser_list, DEFAULT)
+	try:
+		choice = chooser(url, browser_list, DEFAULT)
+	except (KeyboardInterrupt, EOFError):
+		exit(0)
 	if choice is None: exit()
 	browser = browser_list[choice]
 
