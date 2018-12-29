@@ -1,3 +1,5 @@
+* Catch KeyboardInterrupt and alike
+
 * QT: set window title
 * Get windows focus
 * Check this also on GTK
