@@ -1,8 +1,19 @@
 #!/usr/bin/env python3
 
 from setuptools import setup
+from setuptools.command.install import install
+from subprocess import check_call
 
 __version__ = '0.2'
+
+class PostInstallCommand(install):
+	def run(self):
+		print("PostInstallCommand::enter")
+		check_call('kbuildsycoca5')
+		print("PostInstallCommand::middle")
+		install.run(self)
+		print("PostInstallCommand::exit")
+
 
 setup(
 	name = 'uchoose',
@@ -23,7 +34,7 @@ setup(
 		'Intended Audience :: End Users/Desktop',
 		'License :: DFSG approved',
 		'License :: Freely Distributable',
-		'License :: OSI Approved',
+		'License ::cmdclass OSI Approved',
 		'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
 		'Natural Language :: English',
 		'Operating System :: POSIX',
@@ -61,4 +72,5 @@ setup(
 	data_files = [
 		('share/applications', ['org.allandaemon.uchoose.desktop'])
 	],
+	cmdclass = {'install': PostInstallCommand},
 )
