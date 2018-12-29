@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import signal
 from PySide2 import QtCore, QtWidgets, QtGui

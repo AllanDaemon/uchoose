@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 #@TODO: Use colors/bold
 #@TODO: use ncurses or something alike
