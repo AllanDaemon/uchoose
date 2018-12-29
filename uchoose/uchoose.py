@@ -69,13 +69,13 @@ def main():
 	# GUI = False	# for DBG
 	# GUI = True	# for DBG
 
-	if GUI: from gui_qt import gui_qt as chooser
-	else:   from cli    import cli    as chooser
+	if GUI: from .gui_qt import gui_qt as chooser
+	else:   from .cli    import cli    as chooser
 
 	### Program
 
 	#@TODO: put a copy to clipboard option
-	from providers import get_browser_list
+	from .providers import get_browser_list
 	browser_list = get_browser_list()
 	#for n,i,e,d in browser_list: print(n, i, d.filename, repr(e), sep='\t') # dbg
 	# for n,i,e,d in browser_list: print(n, i, repr(e), sep='\t') # dbg
