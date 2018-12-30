@@ -1,6 +1,6 @@
-* QT: set window title
-* Get windows focus
-* Check this also on GTK
+* GTK
+	* Set window title
+	* Get windows focus
 
 * add shortcuts to gui window
 
