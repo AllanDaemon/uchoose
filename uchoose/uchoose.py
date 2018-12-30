@@ -46,27 +46,36 @@ def is_terminal() -> bool:
 	import os
 	return os.isatty(0) and os.isatty(1)
 
+UI_LIST = (
+	'cli',	# Simple cli
+	'qt5',
+	'gtk3',
+)
 
 def _parse_args_and_settings():
-	from sys import argv
 	import argparse
 
-	url = 'http://example.com/this/is.a.url?all=right'
+	dbg_url = 'http://example.com/this/is.a.url?all=right'
+	description = 'Act as default browser, letting you choose what will open an url'
 
 	### Init and parsing
 
-	CLI = is_terminal()
-	GUI = not is_terminal()
-
-	parser = argparse.ArgumentParser()
+	parser = argparse.ArgumentParser(description=description)
 	grp = parser.add_mutually_exclusive_group()
-	grp.add_argument('--gui', action='store_true', default=GUI)
-	grp.add_argument('--cli', action='store_false', dest='gui')
-	parser.add_argument('url', default=url, nargs='?')
-
+	grp.add_argument('-c', '--cli', const='cli', action='store_const', dest='ui', help='a simple command line interface')
+	grp.add_argument('-q', '--qt5', const='qt5', action='store_const', dest='ui', help='QT5 interface')
+	grp.add_argument('-g', '--gtk3', const='gtk3', action='store_const', dest='ui', help='GTK3 interface')
+	grp.add_argument('-u', '--ui', choices=UI_LIST, dest='ui', help='select an user interface')
+	parser.add_argument('url', default=dbg_url, nargs='?')
 	args = parser.parse_args()
+	print("args:", args)
+	exit(0)
+
 	url = args.url
 	GUI = args.gui
+
+	CLI = is_terminal()
+	GUI = not is_terminal()
 
 	# GUI = False	# for DBG
 	# GUI = True	# for DBG
