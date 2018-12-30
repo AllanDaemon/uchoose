@@ -14,11 +14,18 @@ BrowserEntry = namedtuple('BrowserEntry', ['name', 'icon', 'cmd', 'de'])
 #@TODO: check later this
 ## https://stackoverflow.com/questions/5440050/find-the-default-application-name-for-a-given-file
 
+clipboard_entry = BrowserEntry(
+	'Copy to clipboard',
+	'edit-copy-symbolic',
+	None,
+	None
+)
 
 def get_browser_list():
 	de_list = get_browser_desktop_list()
-	return [ BrowserEntry(de.getName(), de.getIcon(), de.getExec(), de)
-		for de in de_list ]
+	return [clipboard_entry] + \
+		[ BrowserEntry(de.getName(), de.getIcon(), de.getExec(), de)
+			for de in de_list ]
 
 def get_browser_desktop_list():
 	browsers_xdg_files = []

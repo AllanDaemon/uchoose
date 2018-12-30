@@ -37,7 +37,9 @@ def exec_(cmd, fork=FORK):
 		os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
 	exit()
 
-
+def copy2clipboard(s: str):
+	from .clipboard import copy_qt as copy
+	copy(s)
 
 
 def is_terminal() -> bool:
@@ -75,7 +77,7 @@ def main():
 	### Program
 
 	#@TODO: put a copy to clipboard option
-	from .providers import get_browser_list
+	from .providers import get_browser_list, clipboard_entry
 	browser_list = get_browser_list()
 	#for n,i,e,d in browser_list: print(n, i, d.filename, repr(e), sep='\t') # dbg
 	# for n,i,e,d in browser_list: print(n, i, repr(e), sep='\t') # dbg
@@ -96,7 +98,10 @@ def main():
 	print(f'URL:      ', url)
 	print(f'BROWSER:  ', choice, repr(browser.name))
 
-	execute(browser.name, browser.cmd, url)
+	if browser == clipboard_entry:
+		copy2clipboard(url)
+	else:
+		execute(browser.name, browser.cmd, url)
 
 
 if __name__ == "__main__":
