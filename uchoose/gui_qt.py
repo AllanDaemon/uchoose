@@ -54,6 +54,8 @@ class Uchoose(QtWidgets.QWidget):
 			self.layout.addWidget(btn)
 
 		self.center()
+		self.setWindowTitle("uChoose")
+		self.activateWindow()
 
 	def center(self):
 		desktop = self.app.desktop()
