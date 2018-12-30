@@ -1,11 +1,8 @@
-* RENAME project UOR (URL Opener Redirector) to uchoose (way better)
-
-* Create an installation script
-* add other desktop folders
+* GTK
+	* Set window title
+	* Get windows focus
 
 * add shortcuts to gui window
-
-* Add option 'Copy to clipboard'
 
 * give preference in order
 

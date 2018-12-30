@@ -1,2 +1,3 @@
 pyxdg
+pyperclip
 PySide2

@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import gi
 gi.require_version('Gtk', '3.0')
@@ -8,7 +8,7 @@ PADDING_SIZE = 0
 ICON_SIZE = 32
 
 
-class UOR(Gtk.Window):
+class Uchoose(Gtk.Window):
 	def __init__(self, url, browser_list, default):
 		super().__init__()
 		self.url = url
@@ -49,7 +49,7 @@ class UOR(Gtk.Window):
 def gui_gtk3(url, broswer_list, default):
 	app = Gtk.Application()
 	app.connect('activate', lambda _: Gtk.main())
-	window = UOR(url, broswer_list, default)
+	window = Uchoose(url, broswer_list, default)
 	app.run()
 	return window.choice
 

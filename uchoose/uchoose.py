@@ -1,8 +1,8 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import argparse
 import os
-from sys import argv
+from sys import argv, exit
 import shlex
 
 DEFAULT = 0
@@ -37,7 +37,9 @@ def exec_(cmd, fork=FORK):
 		os.spawnvp(os.P_NOWAIT, cmd[0], cmd)
 	exit()
 
-
+def copy2clipboard(s: str):
+	from .clipboard import copy
+	copy(s)
 
 
 def is_terminal() -> bool:
@@ -69,13 +71,12 @@ def main():
 	# GUI = False	# for DBG
 	# GUI = True	# for DBG
 
-	if GUI: from gui_qt import gui_qt as chooser
-	else:   from cli    import cli    as chooser
+	if GUI: from .gui_qt import gui_qt as chooser
+	else:   from .cli    import cli    as chooser
 
 	### Program
 
-	#@TODO: put a copy to clipboard option
-	from providers import get_browser_list
+	from .providers import get_browser_list, clipboard_entry
 	browser_list = get_browser_list()
 	#for n,i,e,d in browser_list: print(n, i, d.filename, repr(e), sep='\t') # dbg
 	# for n,i,e,d in browser_list: print(n, i, repr(e), sep='\t') # dbg
@@ -85,7 +86,10 @@ def main():
 	#exit()
 	########
 
-	choice = chooser(url, browser_list, DEFAULT)
+	try:
+		choice = chooser(url, browser_list, DEFAULT)
+	except (KeyboardInterrupt, EOFError):
+		exit(0)
 	if choice is None: exit()
 	browser = browser_list[choice]
 
@@ -93,7 +97,10 @@ def main():
 	print(f'URL:      ', url)
 	print(f'BROWSER:  ', choice, repr(browser.name))
 
-	execute(browser.name, browser.cmd, url)
+	if browser == clipboard_entry:
+		copy2clipboard(url)
+	else:
+		execute(browser.name, browser.cmd, url)
 
 
 if __name__ == "__main__":
