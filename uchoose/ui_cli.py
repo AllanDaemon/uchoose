@@ -20,7 +20,7 @@ def get_choice(browser_list):
 
 
 
-def cli(url, browser_list, default=0):
+def chooser(url, browser_list, default=0):
 	print(f"Open: {url}")
 
 	for i, b in enumerate(browser_list):

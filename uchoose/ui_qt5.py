@@ -88,7 +88,7 @@ class Application(QtWidgets.QApplication):
 	def event(self, e):
 		return QtWidgets.QApplication.event(self, e)
 
-def gui_qt(url, browser_list, default):
+def chooser(url, browser_list, default):
 	# app = QtWidgets.QApplication()
 	app = Application()
 

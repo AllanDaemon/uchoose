@@ -46,7 +46,7 @@ class Uchoose(Gtk.Window):
 		self.destroy()
 
 
-def gui_gtk3(url, broswer_list, default):
+def chooser(url, broswer_list, default):
 	app = Gtk.Application()
 	app.connect('activate', lambda _: Gtk.main())
 	window = Uchoose(url, broswer_list, default)
