@@ -46,16 +46,16 @@ def is_terminal() -> bool:
 	import os
 	return os.isatty(0) and os.isatty(1)
 
-def help():
-	print(f"Usage: {argv[0]} URL OPTIONS????")
 
-def main():
-	### for DBG
+def _parse_args_and_settings():
+	from sys import argv
+	import argparse
+
 	url = 'http://example.com/this/is.a.url?all=right'
-	browser_list = []
 
 	### Init and parsing
 
+	CLI = is_terminal()
 	GUI = not is_terminal()
 
 	parser = argparse.ArgumentParser()
@@ -71,8 +71,50 @@ def main():
 	# GUI = False	# for DBG
 	# GUI = True	# for DBG
 
-	if GUI: from .gui_qt import gui_qt as chooser
-	else:   from .cli    import cli    as chooser
+	if GUI: ui = 'qt5'
+	else:   ui = 'cli'
+
+	return url, ui
+
+
+
+def help():
+	print(f"Usage: {argv[0]} URL OPTIONS????")
+
+def main():
+
+	while False:
+		# ### Init and parsing
+
+		# GUI = not is_terminal()
+
+		# parser = argparse.ArgumentParser()
+		# grp = parser.add_mutually_exclusive_group()
+		# grp.add_argument('--gui', action='store_true', default=GUI)
+		# grp.add_argument('--cli', action='store_false', dest='gui')
+		# parser.add_argument('url', default=url, nargs='?')
+
+		# args = parser.parse_args()
+		# url = args.url
+		# GUI = args.gui
+
+		# # GUI = False	# for DBG
+		# # GUI = True	# for DBG
+
+		# if GUI: from .gui_qt import gui_qt as chooser
+		# else:   from .cli    import cli    as chooser
+		pass
+
+	url, ui = _parse_args_and_settings()
+
+	def qt5_loader(): from .gui_qt import gui_qt as chooser; return chooser
+	def cli_loader(): from .cli    import cli    as chooser; return chooser
+	ui_loader = {
+		'qt5': qt5_loader,
+		'cli': cli_loader,
+	}[ui]
+
+	chooser = ui_loader()
 
 	### Program
 
