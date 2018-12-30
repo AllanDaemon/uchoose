@@ -2,11 +2,18 @@
 
 import argparse
 import os
-from sys import argv, exit
+import sys
+from sys import exit
 import shlex
 
 DEFAULT = 0
 FORK = True
+
+UI_LIST = (
+	'cli',	# Simple cli
+	'qt5',
+	'gtk3',
+)
 
 
 # https://developer.gnome.org/integration-guide/stable/desktop-files.html.en#tb-exec-params
@@ -42,23 +49,33 @@ def copy2clipboard(s: str):
 	copy(s)
 
 
+### Main functions
+
 def is_terminal() -> bool:
 	import os
 	return os.isatty(0) and os.isatty(1)
 
-UI_LIST = (
-	'cli',	# Simple cli
-	'qt5',
-	'gtk3',
-)
+def _figure_out_ui() -> str:
+	if is_terminal():
+		return _figure_out_cli()
+	else:
+		return _figure_out_gui()
+
+def _figure_out_gui() -> str:
+	#@TODO: Check and decide between QT and KDE
+	return 'qt5'
+
+def _figure_out_cli() -> str:
+	# When implement ncurses, check best option
+	return 'cli'
+
 
 def _parse_args_and_settings():
-	import argparse
-
 	dbg_url = 'http://example.com/this/is.a.url?all=right'
 	description = 'Act as default browser, letting you choose what will open an url'
 
 	### Init and parsing
+	sys.UI_SCALE = float(os.environ.get('UI_SCALE', 1.0))
 
 	parser = argparse.ArgumentParser(description=description)
 	grp = parser.add_mutually_exclusive_group()
@@ -68,30 +85,23 @@ def _parse_args_and_settings():
 	grp.add_argument('-u', '--ui', choices=UI_LIST, dest='ui', help='select an user interface')
 	parser.add_argument('url', default=dbg_url, nargs='?')
 	args = parser.parse_args()
-	print("args:", args)
-	exit(0)
 
 	url = args.url
-	GUI = args.gui
+	ui = args.ui
 
-	CLI = is_terminal()
-	GUI = not is_terminal()
+	if not ui:
+		if 'UI' in os.environ:
+			ui = os.environ['UI'].lower()
+			assert ui in UI_LIST
+		else:
+			ui = _figure_out_ui()
 
-	# GUI = False	# for DBG
-	# GUI = True	# for DBG
-
-	if GUI: ui = 'qt5'
-	else:   ui = 'cli'
 	# ui = 'cli'
 	# ui = 'qt5'
 	# ui = 'gtk3'
 
 	return url, ui
 
-
-
-def help():
-	print(f"Usage: {argv[0]} URL OPTIONS????")
 
 def main():
 	url, ui = _parse_args_and_settings()
