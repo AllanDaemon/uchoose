@@ -73,6 +73,9 @@ def _parse_args_and_settings():
 
 	if GUI: ui = 'qt5'
 	else:   ui = 'cli'
+	# ui = 'cli'
+	# ui = 'qt5'
+	# ui = 'gtk3'
 
 	return url, ui
 
@@ -82,41 +85,20 @@ def help():
 	print(f"Usage: {argv[0]} URL OPTIONS????")
 
 def main():
-
-	while False:
-		# ### Init and parsing
-
-		# GUI = not is_terminal()
-
-		# parser = argparse.ArgumentParser()
-		# grp = parser.add_mutually_exclusive_group()
-		# grp.add_argument('--gui', action='store_true', default=GUI)
-		# grp.add_argument('--cli', action='store_false', dest='gui')
-		# parser.add_argument('url', default=url, nargs='?')
-
-		# args = parser.parse_args()
-		# url = args.url
-		# GUI = args.gui
-
-		# # GUI = False	# for DBG
-		# # GUI = True	# for DBG
-
-		# if GUI: from .gui_qt import gui_qt as chooser
-		# else:   from .cli    import cli    as chooser
-		pass
-
 	url, ui = _parse_args_and_settings()
 
-	def qt5_loader(): from .gui_qt import gui_qt as chooser; return chooser
-	def cli_loader(): from .cli    import cli    as chooser; return chooser
-	ui_loader = {
-		'qt5': qt5_loader,
-		'cli': cli_loader,
-	}[ui]
+	if   ui == 'cli':
+		from .ui_cli import chooser
+	elif ui == 'qt5':
+		from .ui_qt5 import chooser
+	elif ui == 'gtk3':
+		from .ui_gtk3 import chooser
+	else:
+		RuntimeError(f"Unknown user interface: {ui}")
 
-	chooser = ui_loader()
 
-	### Program
+
+	### Load providers (browser list)
 
 	from .providers import get_browser_list, clipboard_entry
 	browser_list = get_browser_list()
@@ -128,6 +110,8 @@ def main():
 	#exit()
 	########
 
+	### Choose an entry from browser list
+
 	try:
 		choice = chooser(url, browser_list, DEFAULT)
 	except (KeyboardInterrupt, EOFError):
@@ -138,6 +122,8 @@ def main():
 	print('-'*40)
 	print(f'URL:      ', url)
 	print(f'BROWSER:  ', choice, repr(browser.name))
+
+	### Execute the action
 
 	if browser == clipboard_entry:
 		copy2clipboard(url)
