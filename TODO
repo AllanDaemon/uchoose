@@ -1,8 +1,16 @@
+* QT5
+	* Adopt scale
+
 * GTK
+	* Center window
 	* Set window title
 	* Get windows focus
+	* Adapt design style
+	* Adopt scale
 
-* add shortcuts to gui window
+* Detect gui
+
+* Add shortcuts to gui window
 
 * give preference in order
 
