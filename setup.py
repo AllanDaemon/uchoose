@@ -71,7 +71,10 @@ setup(
 	packages = ['uchoose'],
 	scripts = ['uchoose/uchoose'],
 
-	install_requires = ['pyxdg'],
+	install_requires = [
+		'pyxdg',
+		'pyperclip',
+	],
 	extras_require = {
 		'QT': ['PySide2'],
 		'GTK': [], #@FIX

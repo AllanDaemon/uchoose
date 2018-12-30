@@ -38,7 +38,7 @@ def exec_(cmd, fork=FORK):
 	exit()
 
 def copy2clipboard(s: str):
-	from .clipboard import copy_qt as copy
+	from .clipboard import copy
 	copy(s)
 
 
@@ -76,7 +76,6 @@ def main():
 
 	### Program
 
-	#@TODO: put a copy to clipboard option
 	from .providers import get_browser_list, clipboard_entry
 	browser_list = get_browser_list()
 	#for n,i,e,d in browser_list: print(n, i, d.filename, repr(e), sep='\t') # dbg
