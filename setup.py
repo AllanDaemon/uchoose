@@ -5,7 +5,7 @@ from setuptools.command.install import install
 from setuptools.command.develop import develop
 from subprocess import check_call
 
-__version__ = '0.2'
+__version__ = '0.3'
 
 class InstallCommand(install):
 	def run(self):
