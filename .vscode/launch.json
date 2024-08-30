@@ -5,40 +5,63 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Python: Project (Integrated Terminal)",
+			"name": "Python: Project QT6",
 			"type": "python",
 			"request": "launch",
-			"program": "${workspaceFolder}/uchoose.py",
+			"module": "uchoose.uchoose",
+			"cwd": "${workspaceFolder}",
+			"args": [
+				"-u",
+				"qt6"
+			],
 			"console": "integratedTerminal"
 		},
 		{
-			"name": "Python: Project GUI",
+			"name": "Python: Project QT5",
 			"type": "python",
 			"request": "launch",
-			"program": "${workspaceFolder}/uchoose.py",
-			"args": ["--gui"],
+			"module": "uchoose.uchoose",
+			"cwd": "${workspaceFolder}",
+			"args": [
+				"-u",
+				"qt5"
+			],
+			"console": "integratedTerminal"
+		},
+		{
+			"name": "Python: Project GTK",
+			"type": "python",
+			"request": "launch",
+			"module": "uchoose.uchoose",
+			"cwd": "${workspaceFolder}",
+			"args": [
+				"-u",
+				"gtk"
+			],
 			"console": "integratedTerminal"
 		},
 		{
 			"name": "Python: Project CLI",
 			"type": "python",
 			"request": "launch",
-			"program": "${workspaceFolder}/uchoose.py",
-			"args": ["--cli"],
-			"console": "integratedTerminal"
-		},
-		{
-			"name": "Python: Current File (Integrated Terminal)",
-			"type": "python",
-			"request": "launch",
-			"program": "${file}",
+			"program": "${workspaceFolder}/uchoose/uchoose.py",
+			"args": [
+				"--cli"
+			],
 			"console": "integratedTerminal"
 		},
 		{
 			"name": "Python: Module",
 			"type": "python",
 			"request": "launch",
-			"module": "enter-your-module-name-here",
+			"module": "uchoose.uchoose",
+			"console": "integratedTerminal"
+		},
+		{
+			"name": "Python: Project (Integrated Terminal)",
+			"type": "python",
+			"request": "launch",
+			"program": "${workspaceFolder}/uchoose/uchoose.py",
 			"console": "integratedTerminal"
 		},
 		{
