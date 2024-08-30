@@ -64,7 +64,7 @@ def _figure_out_ui() -> str:
 
 def _figure_out_gui() -> str:
 	#@TODO: Check and decide between QT and KDE
-	return 'qt6'
+	return 'qt5'
 
 def _figure_out_cli() -> str:
 	# When implement ncurses, check best option
