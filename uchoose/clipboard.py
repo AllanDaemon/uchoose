@@ -6,7 +6,7 @@ def copy_pyperclip(s: str):
 	copy(s)
 	print("Clipboard [pyperclip] <-", s)
 
-# NOT WORKING (HANGING)
+# NOT WORKING (coping empty)
 def copy_tk(s: str):
 	from tkinter import Tk
 	r = Tk()
@@ -17,7 +17,7 @@ def copy_tk(s: str):
 	# r.destroy()
 	print("Clipboard [tkinter] <-", s)
 
-# NOT WORKING (HANGING)
+# NOT WORKING (coping empty)
 def copy_qt5(s:str):
 	from PySide2 import QtGui
 
@@ -28,7 +28,7 @@ def copy_qt5(s:str):
 	c.setText(s)
 	print("Clipboard [QT5 (PySide2)] <-", s)
 
-# TODO: Test it
+# NOT WORKING (not coping)
 def copy_qt6(s:str):
 	from PySide6 import QtGui
 
@@ -37,7 +37,7 @@ def copy_qt6(s:str):
 	print("DBG: QT APP:", app)
 	c:QtGui.QClipboard = app.clipboard()
 	c.setText(s)
-	print("Clipboard [QT5 (PySide2)] <-", s)
+	print("Clipboard [QT6 (PySide6)] <-", s)
 
 # NOT IMPLEMENTED
 def copy_gtk(s: str):
