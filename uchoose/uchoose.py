@@ -12,6 +12,7 @@ FORK = True
 UI_LIST = (
 	'cli',	# Simple cli
 	'qt5',
+	'qt6',
 	'gtk3',
 )
 
@@ -63,7 +64,7 @@ def _figure_out_ui() -> str:
 
 def _figure_out_gui() -> str:
 	#@TODO: Check and decide between QT and KDE
-	return 'qt5'
+	return 'qt6'
 
 def _figure_out_cli() -> str:
 	# When implement ncurses, check best option
@@ -80,7 +81,8 @@ def _parse_args_and_settings():
 	parser = argparse.ArgumentParser(description=description)
 	grp = parser.add_mutually_exclusive_group()
 	grp.add_argument('-c', '--cli', const='cli', action='store_const', dest='ui', help='a simple command line interface')
-	grp.add_argument('-q', '--qt5', const='qt5', action='store_const', dest='ui', help='QT5 interface')
+	grp.add_argument('-q', '--qt6', const='qt6', action='store_const', dest='ui', help='QT6 interface')
+	grp.add_argument('-5', '--qt5', const='qt5', action='store_const', dest='ui', help='QT5 interface')
 	grp.add_argument('-g', '--gtk3', const='gtk3', action='store_const', dest='ui', help='GTK3 interface')
 	grp.add_argument('-u', '--ui', choices=UI_LIST, dest='ui', help='select an user interface')
 	parser.add_argument('url', default=dbg_url, nargs='?')
@@ -98,6 +100,7 @@ def _parse_args_and_settings():
 
 	# ui = 'cli'
 	# ui = 'qt5'
+	# ui = 'qt6'
 	# ui = 'gtk3'
 
 	return url, ui
@@ -108,6 +111,8 @@ def main():
 
 	if   ui == 'cli':
 		from .ui_cli import chooser
+	elif ui == 'qt6':
+		from .ui_qt6 import chooser
 	elif ui == 'qt5':
 		from .ui_qt5 import chooser
 	elif ui == 'gtk3':
