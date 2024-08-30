@@ -18,8 +18,19 @@ def copy_tk(s: str):
 	print("Clipboard [tkinter] <-", s)
 
 # NOT WORKING (HANGING)
-def copy_qt(s:str):
+def copy_qt5(s:str):
 	from PySide2 import QtGui
+
+	app: QtGui.QGuiApplication = QtGui.QGuiApplication.instance()
+	if not app: app = QtGui.QGuiApplication([])
+	print("DBG: QT APP:", app)
+	c:QtGui.QClipboard = app.clipboard()
+	c.setText(s)
+	print("Clipboard [QT5 (PySide2)] <-", s)
+
+# TODO: Test it
+def copy_qt6(s:str):
+	from PySide6 import QtGui
 
 	app: QtGui.QGuiApplication = QtGui.QGuiApplication.instance()
 	if not app: app = QtGui.QGuiApplication([])
