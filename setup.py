@@ -76,7 +76,9 @@ setup(
 		'pyperclip',
 	],
 	extras_require = {
-		'QT': ['PySide2'],
+		'QT': ['pyside6'],
+		'QT6': ['pyside6'],
+		'QT5': ['PySide2'],
 		'GTK': [], #@FIX
 	},
 	# package_data = {'': ['*.desktop']},
