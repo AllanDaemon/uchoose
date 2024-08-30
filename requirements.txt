@@ -1,3 +1,4 @@
 pyxdg
 pyperclip
 PySide2
+pyside6
