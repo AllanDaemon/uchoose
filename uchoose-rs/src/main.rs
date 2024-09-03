@@ -1,4 +1,5 @@
 use clap::{Parser, ValueEnum};
+use providers::BrowserEntry;
 
 mod providers;
 mod ui;
@@ -10,6 +11,7 @@ enum UI {
     CLI,
     GTK,
     Iced,
+    TestProviders,
 }
 
 #[derive(Parser)]
@@ -54,5 +56,24 @@ fn main() {
     println!("\tUI: {:?}", cli.ui);
     println!("\tURL: {}", cli.url);
 
-    providers::main_dev();
+    match cli.ui {
+        UI::CLI => return choose_and_execute(ui::ui_cli::chooser, cli.url),
+        UI::GTK => unimplemented!(),
+        UI::Iced => unimplemented!(),
+        UI::TestProviders => return providers::main_dev(),
+    }
+}
+
+fn choose_and_execute(chooser: ui::Chooser, url: String) {
+    const DEFAULT_OPTION: ui::Choice = 0;
+
+    // Choose
+    let browser_list: Vec<BrowserEntry> = providers::get_browsers_list();
+
+    let choice = chooser(url, &browser_list, DEFAULT_OPTION);
+    let browser = browser_list[choice].clone();
+
+    println!("CHOICE: {:?} [{:#?}]", choice, browser);
+
+    // Execute
 }
