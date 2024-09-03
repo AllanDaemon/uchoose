@@ -1,5 +1,8 @@
 use clap::{Parser, ValueEnum};
 
+mod providers;
+
+
 static DBG_URL: &str = "http://example.com/this/is.a.url?all=right";
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
@@ -50,4 +53,6 @@ fn main() {
 
     println!("\tUI: {:?}", cli.ui);
     println!("\tURL: {}", cli.url);
+
+    providers::main_dev();
 }
