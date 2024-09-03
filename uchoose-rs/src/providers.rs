@@ -25,7 +25,7 @@ pub const CLIPBOARD_ENTRY: BrowserEntry<'_> = BrowserEntry {
 fn get_app_desktop_paths(app_dir: &Path) -> Vec<PathBuf> {
     assert!(app_dir.is_dir());
 
-    let mut browser_entries: Vec<PathBuf> = Vec::new();
+    let mut desktop_entries: Vec<PathBuf> = Vec::new();
 
     for entry_result in fs::read_dir(app_dir).unwrap() {
         let entry: fs::DirEntry = entry_result.unwrap();
@@ -33,12 +33,12 @@ fn get_app_desktop_paths(app_dir: &Path) -> Vec<PathBuf> {
 
         if let Some(extension) = path.extension() {
             if extension == DESKTOP_EXTENSION {
-                browser_entries.push(path);
+                desktop_entries.push(path);
             }
         }
     }
 
-    browser_entries
+    desktop_entries
 }
 
 fn get_app_browser_ini(path: &PathBuf) -> Option<BrowserEntry<'static>> {
@@ -54,20 +54,21 @@ fn get_app_browser_ini(path: &PathBuf) -> Option<BrowserEntry<'static>> {
     let _categories = desktop_entry.get("Categories").unwrap_or_default();
     let categories: Vec<&str> = _categories.split(';').collect();
 
-    if categories.contains(&WEB_BROWSER_CATEGORY) {
-        let name: &str = desktop_entry.get("Name").unwrap().clone();
-        let icon: &str = desktop_entry.get("Icon").unwrap().clone();
-        let exec: &str = desktop_entry.get("Exec").unwrap().clone();
-    
-        let entry: BrowserEntry<'static> = BrowserEntry {
-            name: name,
-            icon: icon,
-            exec: Some(exec),
-        };
-        return Some(entry);
+    if !categories.contains(&WEB_BROWSER_CATEGORY) {
+        return None; // Not a Web Browser
     }
 
-    None // Not a Web Browser
+    let name: &str = desktop_entry.get("Name").unwrap().clone();
+    let icon: &str = desktop_entry.get("Icon").unwrap().clone();
+    let exec: &str = desktop_entry.get("Exec").unwrap().clone();
+
+    let entry: BrowserEntry = BrowserEntry {
+        name: name,
+        icon: icon,
+        exec: Some(exec),
+    };
+
+    return Some(entry);
 }
 
 fn get_browser_desktop_list() -> Vec<BrowserEntry<'static>> {
