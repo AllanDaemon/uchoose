@@ -2,6 +2,12 @@
 name = "uchoose"
 version = "0.5.0"
 edition = "2021"
+authors = ["Allan Daemon"]
+description = "Utility to choose how to open a URL instead of a default browser"
+repository = "https://github.com/AllanDaemon/uchoose"
+license = 'GPL-3.0-or-later'
+keywords = ['browser', 'default', 'url opener','freedesktop', 'xdg']
+
 
 [dependencies]
 clap = { version = "4.5.16", features = ["derive"] }
