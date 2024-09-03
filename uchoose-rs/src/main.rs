@@ -1,7 +1,7 @@
 use clap::{Parser, ValueEnum};
 
 mod providers;
-
+mod ui;
 
 static DBG_URL: &str = "http://example.com/this/is.a.url?all=right";
 
