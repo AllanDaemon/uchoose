@@ -12,9 +12,9 @@ const USE_USER_APPS: bool = false;
 
 #[derive(Debug, Clone)]
 pub struct BrowserEntry {
-    name: Cow<'static, str>,
-    icon: Cow<'static, str>,
-    exec: Option<Cow<'static, str>>,
+    pub name: Cow<'static, str>,
+    pub icon: Cow<'static, str>,
+    pub exec: Option<Cow<'static, str>>,
 }
 
 pub const CLIPBOARD_ENTRY: BrowserEntry = BrowserEntry {
