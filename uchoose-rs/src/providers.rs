@@ -1,3 +1,4 @@
+use std::borrow::Cow;
 use std::path::PathBuf;
 use std::{fs, path::Path};
 
@@ -10,15 +11,15 @@ const WEB_BROWSER_CATEGORY: &str = "WebBrowser";
 const USE_USER_APPS: bool = false;
 
 #[derive(Debug)]
-pub struct BrowserEntry<'a> {
-    name: &'a str,
-    icon: &'a str,
-    exec: Option<&'a str>,
+pub struct BrowserEntry {
+    name: Cow<'static, str>,
+    icon: Cow<'static, str>,
+    exec: Option<Cow<'static, str>>,
 }
 
-pub const CLIPBOARD_ENTRY: BrowserEntry<'_> = BrowserEntry {
-    name: "Copy to clipboard",
-    icon: "edit-copy-symbolic",
+pub const CLIPBOARD_ENTRY: BrowserEntry = BrowserEntry {
+    name: Cow::Borrowed("Copy to clipboard"),
+    icon: Cow::Borrowed("edit-copy-symbolic"),
     exec: None,
 };
 
@@ -41,7 +42,7 @@ fn get_app_desktop_paths(app_dir: &Path) -> Vec<PathBuf> {
     desktop_entries
 }
 
-fn get_app_browser_ini(path: &PathBuf) -> Option<BrowserEntry<'static>> {
+fn get_app_browser_ini(path: &PathBuf) -> Option<BrowserEntry> {
     // println!("FILE: {:?}", path);
     let ini = Ini::load_from_file(path).expect("Error parsing desktop file");
 
@@ -58,9 +59,9 @@ fn get_app_browser_ini(path: &PathBuf) -> Option<BrowserEntry<'static>> {
         return None; // Not a Web Browser
     }
 
-    let name: &str = desktop_entry.get("Name").unwrap().clone();
-    let icon: &str = desktop_entry.get("Icon").unwrap().clone();
-    let exec: &str = desktop_entry.get("Exec").unwrap().clone();
+    let name = Cow::Owned(desktop_entry.get("Name").unwrap().into());
+    let icon = Cow::Owned(desktop_entry.get("Icon").unwrap().into());
+    let exec = Cow::Owned(desktop_entry.get("Exec").unwrap().into());
 
     let entry: BrowserEntry = BrowserEntry {
         name: name,
@@ -71,7 +72,7 @@ fn get_app_browser_ini(path: &PathBuf) -> Option<BrowserEntry<'static>> {
     return Some(entry);
 }
 
-fn get_browser_desktop_list() -> Vec<BrowserEntry<'static>> {
+fn get_browser_desktop_list() -> Vec<BrowserEntry> {
     let app_dir = Path::new(APP_DIR_SYSTEM);
     let mut file_paths = get_app_desktop_paths(&app_dir);
 
@@ -90,7 +91,7 @@ fn get_browser_desktop_list() -> Vec<BrowserEntry<'static>> {
     browsers
 }
 
-pub fn get_browsers_list() -> Vec<BrowserEntry<'static>> {
+pub fn get_browsers_list() -> Vec<BrowserEntry> {
     let mut browsers: Vec<BrowserEntry> = get_browser_desktop_list();
     browsers.insert(0, CLIPBOARD_ENTRY);
 
