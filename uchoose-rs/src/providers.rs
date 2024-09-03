@@ -5,12 +5,12 @@ use std::{fs, path::Path};
 use ini::Ini;
 
 const APP_DIR_SYSTEM: &str = "/usr/share/applications/";
-const APP_DIR_USER: &str = "~/.local/share/applications/";
+const APP_DIR_USER: &str = "~/.local/share/applications/"; // TODO: fix for user path with HOME
 const DESKTOP_EXTENSION: &str = "desktop"; // Files that ends with .desktop
 const WEB_BROWSER_CATEGORY: &str = "WebBrowser";
 const USE_USER_APPS: bool = false;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct BrowserEntry {
     name: Cow<'static, str>,
     icon: Cow<'static, str>,
@@ -24,7 +24,9 @@ pub const CLIPBOARD_ENTRY: BrowserEntry = BrowserEntry {
 };
 
 fn get_app_desktop_paths(app_dir: &Path) -> Vec<PathBuf> {
-    assert!(app_dir.is_dir());
+    if !app_dir.is_dir() {
+        return vec![];
+    }
 
     let mut desktop_entries: Vec<PathBuf> = Vec::new();
 
