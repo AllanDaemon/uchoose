@@ -11,4 +11,5 @@ keywords = ['browser', 'default', 'url opener','freedesktop', 'xdg']
 
 [dependencies]
 clap = { version = "4.5.16", features = ["derive"] }
+gtk = { version = "0.9.1", package = "gtk4", features = ["v4_14"] }
 rust-ini = "0.21.1"
