@@ -18,7 +18,7 @@ enum UI {
 #[command(version, about, long_about = None)]
 struct Cli {
     #[arg(value_enum)]
-    #[arg(default_value_t = UI::CLI)]
+    #[arg(default_value_t = UI::GTK)]
     #[arg(short, long)]
     #[arg(help = "Choose the ui to use")]
     ui: UI,
@@ -58,7 +58,7 @@ fn main() {
 
     match cli.ui {
         UI::CLI => return choose_and_execute(ui::ui_cli::chooser, cli.url),
-        UI::GTK => unimplemented!(),
+        UI::GTK => return choose_and_execute(ui::ui_gtk4::chooser, cli.url),
         UI::Iced => unimplemented!(),
         UI::TestProviders => return providers::main_dev(),
     }
