@@ -10,7 +10,20 @@ use crate::providers::BrowserEntry;
 const APP_ID: &str = "gg.allan.uchoose.rs.gkt4";
 
 fn build_uchoose(app: &Application, url: &str, browser_list: &Vec<BrowserEntry>, default: Choice) {
-    build_ui2(app)
+    let vbox = gtk::Box::builder()
+        .orientation(gtk::Orientation::Vertical)
+        .build();
+
+    let url_label = gtk::Label::new(Some("URL"));
+    vbox.append(&url_label);
+
+    let window = ApplicationWindow::builder()
+        .application(app)
+        .title("uchoose")
+        .child(&vbox)
+        .build();
+
+    window.present();
 }
 
 fn build_ui2(app: &Application) {
@@ -45,7 +58,7 @@ pub fn chooser(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -
 
     let app = Application::builder().application_id(APP_ID).build();
 
-	let _browser_list = browser_list.clone();
+    let _browser_list = browser_list.clone();
 
     app.connect_activate(move |app| build_uchoose(app, &url, &_browser_list, default));
 
