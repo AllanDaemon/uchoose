@@ -13,7 +13,18 @@ const APP_ID: &str = "gg.allan.uchoose.rs.gkt4";
 
 const MARGIN: i32 = 16;
 
-fn build_uchoose(app: &Application, url: &str, browser_list: &Vec<BrowserEntry>, default: Choice) {
+
+
+#[derive(Debug)]
+struct ChoiceResult(Option<Choice>);
+
+fn build_uchoose(
+    app: &Application,
+    url: &str,
+    browser_list: &Vec<BrowserEntry>,
+    default: Choice,
+    // result: &mut ChoiceResult,
+) {
     // let icon_theme;
 
     let vbox = gtk::Box::builder()
@@ -22,6 +33,12 @@ fn build_uchoose(app: &Application, url: &str, browser_list: &Vec<BrowserEntry>,
         .margin_end(2 * MARGIN)
         .margin_top(MARGIN)
         .margin_bottom(MARGIN)
+        .build();
+
+    let window = ApplicationWindow::builder()
+        .application(app)
+        .title("uchoose")
+        .child(&vbox)
         .build();
 
     // let url_label = gtk::Label::new(Some(url));
@@ -42,14 +59,13 @@ fn build_uchoose(app: &Application, url: &str, browser_list: &Vec<BrowserEntry>,
             .margin_bottom(8)
             .build();
 
+        btn.connect_clicked(move |_btn| {
+            println!("<BUTTON PRESSED> {}", i);
+			window.destroy();
+        });
+
         vbox.append(&btn);
     }
-
-    let window = ApplicationWindow::builder()
-        .application(app)
-        .title("uchoose")
-        .child(&vbox)
-        .build();
 
     window.present();
 }
@@ -84,15 +100,16 @@ fn build_ui2(app: &Application) {
 pub fn chooser(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -> Choice {
     println!("GTK4 Open: {}", url);
 
+    // let mut choice = ChoiceResult(None);
+
     let app = Application::builder().application_id(APP_ID).build();
-
     let _browser_list = browser_list.clone();
-
     app.connect_activate(move |app| build_uchoose(app, &url, &_browser_list, default));
 
     println!("App run");
     app.run();
     println!("App run out");
+    // println!("CHOICE: {:#?}", choice);
 
     0
 }
