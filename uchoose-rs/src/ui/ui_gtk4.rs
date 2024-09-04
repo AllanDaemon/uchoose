@@ -1,6 +1,8 @@
 // Needs to install libraries in the system too
 // Check: https://gtk-rs.org/gtk4-rs/stable/latest/book/installation_linux.html
 
+use std::borrow::Borrow;
+
 use gtk::prelude::*;
 use gtk::{glib, Application, ApplicationWindow};
 
@@ -9,13 +11,39 @@ use crate::providers::BrowserEntry;
 
 const APP_ID: &str = "gg.allan.uchoose.rs.gkt4";
 
+const MARGIN: i32 = 16;
+
 fn build_uchoose(app: &Application, url: &str, browser_list: &Vec<BrowserEntry>, default: Choice) {
+    // let icon_theme;
+
     let vbox = gtk::Box::builder()
         .orientation(gtk::Orientation::Vertical)
+        .margin_start(2 * MARGIN)
+        .margin_end(2 * MARGIN)
+        .margin_top(MARGIN)
+        .margin_bottom(MARGIN)
         .build();
 
-    let url_label = gtk::Label::new(Some("URL"));
+    // let url_label = gtk::Label::new(Some(url));
+    let url_label = gtk::Label::builder()
+        .label(url)
+        .margin_bottom(MARGIN)
+        .build();
     vbox.append(&url_label);
+
+    for (i, entry) in browser_list.iter().enumerate() {
+        let label = gtk::Label::new(Some(entry.name.borrow()));
+
+        let btn = gtk::Button::builder()
+            .icon_name(entry.icon.to_owned())
+            .label(entry.name.to_owned())
+            .has_frame(true)
+            .margin_top(8)
+            .margin_bottom(8)
+            .build();
+
+        vbox.append(&btn);
+    }
 
     let window = ApplicationWindow::builder()
         .application(app)
