@@ -9,12 +9,7 @@ use crate::providers::BrowserEntry;
 
 const APP_ID: &str = "gg.allan.uchoose.rs.gkt4";
 
-fn build_uchoose(
-    app: &Application,
-    url: &str,
-    // browser_list: &Vec<BrowserEntry>,
-    // default: Choice,
-) {
+fn build_uchoose(app: &Application, url: &str, browser_list: &Vec<BrowserEntry>, default: Choice) {
     build_ui2(app)
 }
 
@@ -50,7 +45,9 @@ pub fn chooser(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -
 
     let app = Application::builder().application_id(APP_ID).build();
 
-    app.connect_activate(move |app| build_uchoose(app, &url));
+	let _browser_list = browser_list.clone();
+
+    app.connect_activate(move |app| build_uchoose(app, &url, &_browser_list, default));
 
     println!("App run");
     app.run();
