@@ -13,10 +13,110 @@ const APP_ID: &str = "gg.allan.uchoose.rs.gkt4";
 
 const MARGIN: i32 = 16;
 
-
-
 #[derive(Debug)]
 struct ChoiceResult(Option<Choice>);
+
+#[derive(Debug, Clone)]
+struct UchooseWin {
+    url: String,
+    browser_list: Vec<BrowserEntry>,
+    default: Choice,
+    choice: Option<Choice>,
+    state: Option<UchooseWinState>,
+}
+
+#[derive(Debug, Clone)]
+struct UchooseWinState {
+    win: ApplicationWindow,
+}
+
+impl UchooseWin {
+    fn choose(&mut self) -> Choice {
+        println!("App create");
+        let app = Application::builder().application_id(APP_ID).build();
+
+        // app.connect_activate(|app| self.build_uchoose(app));
+
+        println!("App build");
+        self.build_uchoose(&app);
+
+        println!("App run");
+        app.run();
+        println!("App run out");
+
+        println!("CHOICE: {:#?}", self.choice);
+
+        0
+    }
+
+    fn build_uchoose(&mut self, app: &Application) {
+        // let icon_theme;
+
+        let vbox = gtk::Box::builder()
+            .orientation(gtk::Orientation::Vertical)
+            .margin_start(2 * MARGIN)
+            .margin_end(2 * MARGIN)
+            .margin_top(MARGIN)
+            .margin_bottom(MARGIN)
+            .build();
+
+        let window: ApplicationWindow = ApplicationWindow::builder()
+            .application(app)
+            .title("uchoose")
+            .child(&vbox)
+            .build();
+
+        let win = &window;
+        // self.state = Some(UchooseWinState { win: window });
+
+        // let url_label = gtk::Label::new(Some(url));
+        let url_label = gtk::Label::builder()
+            .label(&self.url)
+            .margin_bottom(MARGIN)
+            .build();
+        vbox.append(&url_label);
+
+        for (i, entry) in self.browser_list.iter().enumerate() {
+            let label = gtk::Label::new(Some(entry.name.borrow()));
+
+            let btn = gtk::Button::builder()
+                .icon_name(entry.icon.to_owned())
+                .label(entry.name.to_owned())
+                .has_frame(true)
+                .margin_top(8)
+                .margin_bottom(8)
+                .build();
+
+            btn.connect_clicked(move |_btn: &gtk::Button| {
+                println!("<BUTTON PRESSED> {}", i);
+
+                // win.destroy();
+            });
+
+            vbox.append(&btn);
+        }
+
+        win.present();
+    }
+
+    fn on_click(&self, choice: Choice) {}
+}
+
+pub fn chooser(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -> Choice {
+    println!("GTK4 Open: {}", url);
+
+    let mut chooser: UchooseWin = UchooseWin {
+        url: url.clone(),
+        browser_list: browser_list.clone(),
+        default: default.clone(),
+        choice: None,
+        state: None,
+    };
+
+    chooser.choose()
+}
+
+/*
 
 fn build_uchoose(
     app: &Application,
@@ -61,7 +161,7 @@ fn build_uchoose(
 
         btn.connect_clicked(move |_btn| {
             println!("<BUTTON PRESSED> {}", i);
-			window.destroy();
+            window.destroy();
         });
 
         vbox.append(&btn);
@@ -69,6 +169,8 @@ fn build_uchoose(
 
     window.present();
 }
+
+
 
 fn build_ui2(app: &Application) {
     // Create a button with label and margins
@@ -97,7 +199,7 @@ fn build_ui2(app: &Application) {
     window.present();
 }
 
-pub fn chooser(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -> Choice {
+pub fn chooser2(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -> Choice {
     println!("GTK4 Open: {}", url);
 
     // let mut choice = ChoiceResult(None);
@@ -112,4 +214,4 @@ pub fn chooser(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -
     // println!("CHOICE: {:#?}", choice);
 
     0
-}
+} */
