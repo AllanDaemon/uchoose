@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"name": "uchoose-rs",
+			"path": "../uchoose-rs"
+		}
+	],
+	"settings": {
+		"lldb.verboseLogging": true
+	},
+	"extensions": {
+		"recommendations": [
+			"rust-lang.rust-analyzer",
+			"vadimcn.vscode-lldb"
+		]
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": []
+	}
+}
