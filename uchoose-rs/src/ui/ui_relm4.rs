@@ -90,12 +90,38 @@ impl SimpleComponent for UchooseApp {
         vbox.append(&label);
         window.set_child(Some(&vbox));
 
+        let icon_theme = gtk::IconTheme::default();
+
         for (i, entry) in init_params.browser_list.iter().enumerate() {
-            // let label = gtk::Label::new(Some(entry.name.borrow()));
+            let label = gtk::Label::new(Some(&entry.name));
+
+
+            let icon_size = gtk::IconSize::Large;
+
+            let icon_paintable = icon_theme.lookup_icon(
+                &entry.icon,
+                &["utilities-terminal"],
+                32,
+                1,
+                gtk::TextDirection::Ltr,
+                gtk::IconLookupFlags::PRELOAD,
+            );
+
+            // let icon = gtk::Image::from_icon_name(&entry.icon);
+            // let icon = gtk::Image::from_paintable(Some(&icon_paintable));
+            let icon = gtk::Image::builder().icon_name(entry.icon.to_owned()).icon_size(icon_size).build();
+
+            let btn_box = gtk::Box::builder()
+                .orientation(gtk::Orientation::Horizontal)
+                .spacing(MARGIN)
+                .build();
+            btn_box.append(&icon);
+            btn_box.append(&label);
 
             let btn = gtk::Button::builder()
-                .icon_name(entry.icon.to_owned())
-                .label(entry.name.to_owned())
+                // .label(entry.name.to_owned())
+                // .icon_name(entry.icon.to_owned())
+                .child(&btn_box)
                 // .has_frame(true)
                 // .margin_top(8)
                 // .margin_bottom(8)
