@@ -35,23 +35,9 @@ pub fn chooser(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -
         default: default.clone(),
     };
 
-    // Create GTK Application explicitly to access the global settings
-    let gtk_app: gtk::Application = relm4::main_application();
-    gtk_app.set_application_id(Some(APP_ID));
-
-    // let curr_dpi = gtk_app.property_value("gtk-xft-dpi");
-    // println!("gtk-xft-dpi: {:#?}", curr_dpi);
-
-    // let new_dpi: f64 = 2. * (96.0 * 1024.0);
-    // let value: &dyn ToValue = &new_dpi;
-    // let dpi_values: &[(&str, &dyn ToValue)] = &[("gtk-xft-dpi", value)];
-    // gtk_app.set_properties(dpi_values);
-
     // Pass empty args, otherwise it interpret our args as gtk args
     let gtk_app_arg: Vec<String> = Vec::new();
-
-    // let app = RelmApp::new(APP_ID).with_args(gtk_app_arg);
-    let app = RelmApp::from_app(gtk_app).with_args(gtk_app_arg);
+    let app = RelmApp::new(APP_ID).with_args(gtk_app_arg);
 
     println!("App will run");
     app.run::<UchooseApp>(choose_params);
@@ -68,6 +54,17 @@ struct AppWidgets {
     label: gtk::Label,
 }
 
+fn set_scale(win: &gtk::Window, scale: f64) {
+    // Get settings and set scale
+    let settings = win.settings();
+
+    let curr_dpi: i32 = settings.gtk_xft_dpi();
+    let new_dpi: i32 = (scale * (curr_dpi as f64)) as i32;
+    settings.set_gtk_xft_dpi(new_dpi);
+
+    // println!("gtk-xft-dpi: {:#?} ({}*1024)", curr_dpi, curr_dpi / 1024);
+}
+
 impl SimpleComponent for UchooseApp {
     type Init = UchooseParams;
     type Input = InputMsg;
@@ -77,14 +74,7 @@ impl SimpleComponent for UchooseApp {
 
     fn init_root() -> Self::Root {
         let win = gtk::Window::builder().title("uChoose").build();
-
-        let settings = win.settings();
-
-        let curr_dpi: i32 = settings.gtk_xft_dpi();
-        println!("gtk-xft-dpi: {:#?} ({}*1024)", curr_dpi, curr_dpi / 1024);
-        let new_dpi: i32 = (UI_SCALE * (curr_dpi as f64)) as i32;
-        settings.set_gtk_xft_dpi(new_dpi);
-
+        set_scale(&win, UI_SCALE);
         win
     }
 
@@ -93,9 +83,6 @@ impl SimpleComponent for UchooseApp {
         window: Self::Root,
         sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
-        // let curr_dpi = window.property_value("gtk-xft-dpi");
-        // println!("gtk-xft-dpi: {:#?}", curr_dpi);
-
         let model = UchooseApp { choice: None };
 
         let vbox = gtk::Box::builder()
