@@ -1,4 +1,4 @@
-use super::Choice;
+use super::{Choice, ChoiceIndex};
 use crate::providers::BrowserEntry;
 
 fn get_choice(browser_list: &Vec<BrowserEntry>) -> Option<usize> {
@@ -34,18 +34,17 @@ fn get_choice(browser_list: &Vec<BrowserEntry>) -> Option<usize> {
     }
 }
 
-pub fn chooser(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -> Choice {
+pub fn chooser(
+    url: String,
+    browser_list: &Vec<BrowserEntry>,
+    default_option: ChoiceIndex,
+) -> Choice {
     println!("Open: {}", url);
 
     for (i, b) in browser_list.iter().enumerate() {
-        let prefix = if i == default { '*' } else { ' ' };
+        let prefix = if i == default_option { '*' } else { ' ' };
         println!("  {}{}  {}", prefix, i, b.name)
     }
 
-    if let Some(choice) = get_choice(browser_list) {
-        choice
-    } else {
-        println!("Error getting choice; using default");
-        default
-    }
+    get_choice(browser_list)
 }

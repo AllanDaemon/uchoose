@@ -6,7 +6,7 @@ use std::borrow::Borrow;
 use gtk::prelude::*;
 use gtk::{glib, Application, ApplicationWindow};
 
-use super::Choice;
+use super::{Choice, ChoiceIndex};
 use crate::providers::BrowserEntry;
 
 const APP_ID: &str = "gg.allan.uchoose.rs.gkt4";
@@ -20,7 +20,7 @@ struct ChoiceResult(Option<Choice>);
 struct UchooseWin {
     url: String,
     browser_list: Vec<BrowserEntry>,
-    default: Choice,
+    default_option: ChoiceIndex,
     choice: Option<Choice>,
     state: Option<UchooseWinState>,
 }
@@ -46,7 +46,7 @@ impl UchooseWin {
 
         println!("CHOICE: {:#?}", self.choice);
 
-        0
+        None
     }
 
     fn build_uchoose(&mut self, app: &Application) {
@@ -102,13 +102,17 @@ impl UchooseWin {
     fn on_click(&self, choice: Choice) {}
 }
 
-pub fn chooser(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -> Choice {
+pub fn chooser(
+    url: String,
+    browser_list: &Vec<BrowserEntry>,
+    default_option: ChoiceIndex,
+) -> Choice {
     println!("GTK4 Open: {}", url);
 
     let mut chooser: UchooseWin = UchooseWin {
         url: url.clone(),
         browser_list: browser_list.clone(),
-        default: default.clone(),
+        default_option: default_option.clone(),
         choice: None,
         state: None,
     };

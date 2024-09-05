@@ -5,7 +5,7 @@ use gtk::glib::clone;
 use gtk::prelude::*;
 use relm4::prelude::*;
 
-use super::Choice;
+use super::{Choice, ChoiceIndex};
 use crate::providers::BrowserEntry;
 
 const APP_ID: &str = "gg.allan.uchoose.rs.relm4";
@@ -13,12 +13,12 @@ const PADDING_SIZE: i32 = 16;
 const UI_SCALE: f64 = 1.5;
 
 struct UchooseApp {
-    result: Rc<RefCell<Option<Choice>>>, // The way to get write the result back to us
+    result: Rc<RefCell<Choice>>, // The way to get write the result back to us
 }
 
 #[derive(Debug)]
 enum InputMsg {
-    Chosen(Choice),
+    Chosen(ChoiceIndex),
     Cancelled,
 }
 
@@ -26,11 +26,15 @@ enum InputMsg {
 struct UchooseParams {
     url: String,
     browser_list: Vec<BrowserEntry>,
-    default: Choice,
-    result: Rc<RefCell<Option<Choice>>>, // Used as intermediary to build in the model
+    default_option: ChoiceIndex,
+    result: Rc<RefCell<Choice>>, // Used as intermediary to build in the model
 }
 
-pub fn chooser(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -> Choice {
+pub fn chooser(
+    url: String,
+    browser_list: &Vec<BrowserEntry>,
+    default_option: ChoiceIndex,
+) -> Choice {
     println!("Relm4 Open: {}", url);
 
     let result = Rc::new(RefCell::new(None));
@@ -38,7 +42,7 @@ pub fn chooser(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -
     let mut choose_params: UchooseParams = UchooseParams {
         url: url.clone(),
         browser_list: browser_list.clone(),
-        default: default.clone(),
+        default_option: default_option.clone(),
         result: Rc::clone(&result),
     };
 
@@ -50,7 +54,7 @@ pub fn chooser(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -
     app.run::<UchooseApp>(choose_params);
     println!("App ran out\n");
 
-    return result.borrow().unwrap_or(default);
+    return *result.borrow();
 }
 
 struct AppWidgets {}
@@ -121,7 +125,7 @@ impl SimpleComponent for UchooseApp {
                 None => String::new(),
                 Some(s) => s.to_string(),
             };
-            let is_default: bool = idx_btn == init_params.default;
+            let is_default: bool = idx_btn == init_params.default_option;
 
             let btn = gtk::Button::builder()
                 .child(&btn_box)
@@ -131,7 +135,7 @@ impl SimpleComponent for UchooseApp {
 
             vbox.append(&btn);
 
-            if idx_btn == init_params.default {
+            if idx_btn == init_params.default_option {
                 gtk::prelude::GtkWindowExt::set_focus(&window, Some(&btn));
             }
 
