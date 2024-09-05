@@ -10,6 +10,7 @@ static DBG_URL: &str = "http://example.com/this/is.a.url?all=right";
 enum UI {
     CLI,
     GTK,
+    Relm,
     Iced,
     TestProviders,
 }
@@ -33,6 +34,10 @@ struct Cli {
     gtk: bool,
 
     #[arg(short, long)]
+    #[arg(help = "Same as --ui relm")]
+    relm: bool,
+
+    #[arg(short, long)]
     #[arg(help = "Same as --ui iced")]
     iced: bool,
 
@@ -49,6 +54,9 @@ fn main() {
     if cli.gtk {
         cli.ui = UI::GTK;
     }
+    if cli.relm {
+        cli.ui = UI::Relm;
+    }
     if cli.iced {
         cli.ui = UI::Iced;
     }
@@ -59,6 +67,7 @@ fn main() {
     match cli.ui {
         UI::CLI => return choose_and_execute(ui::ui_cli::chooser, cli.url),
         UI::GTK => return choose_and_execute(ui::ui_gtk4::chooser, cli.url),
+        UI::Relm => return choose_and_execute(ui::ui_relm4::chooser, cli.url),
         UI::Iced => unimplemented!(),
         UI::TestProviders => return providers::main_dev(),
     }
