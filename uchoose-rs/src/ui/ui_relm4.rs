@@ -15,7 +15,7 @@ struct UchooseApp {
 
 #[derive(Debug)]
 enum InputMsg {
-    Chosen,
+    Chosen(Choice),
     Cancelled,
 }
 
@@ -46,13 +46,7 @@ pub fn chooser(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -
     0
 }
 
-struct AppWidgets {
-    // window: gtk::Window,
-    // vbox: gtk::Box,
-    // inc_button: gtk::Button,
-    // dec_button: gtk::Button,
-    label: gtk::Label,
-}
+struct AppWidgets {}
 
 fn set_scale(win: &gtk::Window, scale: f64) {
     // Get settings and set scale
@@ -85,49 +79,48 @@ impl SimpleComponent for UchooseApp {
     ) -> ComponentParts<Self> {
         let model = UchooseApp { choice: None };
 
+        let label = gtk::Label::new(Some(&init_params.url));
+        label.set_margin_all(5);
+
         let vbox = gtk::Box::builder()
             .orientation(gtk::Orientation::Vertical)
             .spacing(5)
             .build();
-
-        let inc_button = gtk::Button::with_label("Increment");
-        let dec_button = gtk::Button::with_label("Decrement");
-
-        let label = gtk::Label::new(Some(&init_params.url));
-        label.set_margin_all(5);
-
-        window.set_child(Some(&vbox));
         vbox.set_margin_all(5);
         vbox.append(&label);
-        vbox.append(&inc_button);
-        vbox.append(&dec_button);
+        window.set_child(Some(&vbox));
 
-        inc_button.connect_clicked(clone!(
-            #[strong]
-            sender,
-            move |_| {
-                sender.input(InputMsg::Chosen);
-            }
-        ));
+        for (i, entry) in init_params.browser_list.iter().enumerate() {
+            // let label = gtk::Label::new(Some(entry.name.borrow()));
 
-        dec_button.connect_clicked(clone!(
-            #[strong]
-            sender,
-            move |_| {
-                sender.input(InputMsg::Cancelled);
-            }
-        ));
+            let btn = gtk::Button::builder()
+                .icon_name(entry.icon.to_owned())
+                .label(entry.name.to_owned())
+                // .has_frame(true)
+                // .margin_top(8)
+                // .margin_bottom(8)
+                .build();
 
-        let widgets = AppWidgets { label };
+            vbox.append(&btn);
 
+            btn.connect_clicked(clone!(
+                #[strong]
+                sender,
+                move |_| {
+                    sender.input(InputMsg::Chosen(i));
+                }
+            ));
+        }
+
+        let widgets = AppWidgets {};
         ComponentParts { model, widgets }
     }
 
     fn update(&mut self, msg: Self::Input, _sender: ComponentSender<Self>) {
         match msg {
-            InputMsg::Chosen => {
-                println!("InputMsg::Chosen");
-                self.choice = Some(3);
+            InputMsg::Chosen(choice) => {
+                println!("InputMsg::Chosen {choice:?}");
+                self.choice = Some(choice);
             }
             InputMsg::Cancelled => {
                 println!("InputMsg::Cancelled");
