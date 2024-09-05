@@ -41,7 +41,7 @@ pub fn chooser(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -
 
     println!("App will run");
     app.run::<UchooseApp>(choose_params);
-    println!("App ran out");
+    println!("App ran out\n");
 
     0
 }
@@ -144,10 +144,12 @@ impl SimpleComponent for UchooseApp {
             InputMsg::Chosen(choice) => {
                 println!("InputMsg::Chosen {choice:?}");
                 self.choice = Some(choice);
+                relm4::main_application().quit();
             }
             InputMsg::Cancelled => {
                 println!("InputMsg::Cancelled");
                 self.choice = None;
+                relm4::main_application().quit();
             }
         }
     }
