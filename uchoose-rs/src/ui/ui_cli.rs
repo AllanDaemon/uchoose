@@ -1,6 +1,21 @@
 use super::{Choice, ChoiceIndex};
 use crate::providers::BrowserEntry;
 
+pub fn chooser(
+    url: String,
+    browser_list: &Vec<BrowserEntry>,
+    default_option: ChoiceIndex,
+) -> Choice {
+    println!("Open: {}", url);
+
+    for (i, b) in browser_list.iter().enumerate() {
+        let prefix = if i == default_option { '*' } else { ' ' };
+        println!("  {}{}  {}", prefix, i, b.name)
+    }
+
+    get_choice(browser_list)
+}
+
 fn get_choice(browser_list: &Vec<BrowserEntry>) -> Option<usize> {
     let mut input_line = String::new();
 
@@ -32,19 +47,4 @@ fn get_choice(browser_list: &Vec<BrowserEntry>) -> Option<usize> {
         println!("Wrong choice (not a number)!");
         return get_choice(browser_list);
     }
-}
-
-pub fn chooser(
-    url: String,
-    browser_list: &Vec<BrowserEntry>,
-    default_option: ChoiceIndex,
-) -> Choice {
-    println!("Open: {}", url);
-
-    for (i, b) in browser_list.iter().enumerate() {
-        let prefix = if i == default_option { '*' } else { ' ' };
-        println!("  {}{}  {}", prefix, i, b.name)
-    }
-
-    get_choice(browser_list)
 }
