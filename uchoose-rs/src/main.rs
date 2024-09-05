@@ -1,3 +1,7 @@
+//TODO FIX
+#![allow(dead_code)]
+#![allow(unused)]
+
 use clap::{Parser, ValueEnum};
 use providers::BrowserEntry;
 
