@@ -28,7 +28,7 @@ struct Cli {
     default: i32,
 
     #[arg(value_enum)]
-    #[arg(default_value_t = UI::GTK)]
+    #[arg(default_value_t = UI::Relm)]
     #[arg(short, long)]
     #[arg(help = "Choose the ui to use")]
     ui: UI,
