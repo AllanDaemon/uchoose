@@ -1,3 +1,6 @@
+use std::cell::RefCell;
+use std::rc::Rc;
+
 use gtk::glib::clone;
 use gtk::prelude::*;
 use relm4::prelude::*;
@@ -10,7 +13,7 @@ const PADDING_SIZE: i32 = 16;
 const UI_SCALE: f64 = 1.5;
 
 struct UchooseApp {
-    choice: Option<Choice>,
+    result: Rc<RefCell<Option<Choice>>>, // The way to get write the result back to us
 }
 
 #[derive(Debug)]
@@ -24,15 +27,19 @@ struct UchooseParams {
     url: String,
     browser_list: Vec<BrowserEntry>,
     default: Choice,
+    result: Rc<RefCell<Option<Choice>>>, // Used as intermediary to build in the model
 }
 
 pub fn chooser(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -> Choice {
     println!("Relm4 Open: {}", url);
 
-    let choose_params: UchooseParams = UchooseParams {
+    let result = Rc::new(RefCell::new(None));
+
+    let mut choose_params: UchooseParams = UchooseParams {
         url: url.clone(),
         browser_list: browser_list.clone(),
         default: default.clone(),
+        result: Rc::clone(&result),
     };
 
     // Pass empty args, otherwise it interpret our args as gtk args
@@ -43,7 +50,7 @@ pub fn chooser(url: String, browser_list: &Vec<BrowserEntry>, default: Choice) -
     app.run::<UchooseApp>(choose_params);
     println!("App ran out\n");
 
-    0
+    return result.borrow().unwrap_or(default);
 }
 
 struct AppWidgets {}
@@ -77,7 +84,9 @@ impl SimpleComponent for UchooseApp {
         window: Self::Root,
         sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
-        let model = UchooseApp { choice: None };
+        let model = UchooseApp {
+            result: init_params.result,
+        };
 
         let label = gtk::Label::new(Some(&init_params.url));
         label.set_margin_all(PADDING_SIZE);
@@ -140,18 +149,20 @@ impl SimpleComponent for UchooseApp {
     }
 
     fn update(&mut self, msg: Self::Input, _sender: ComponentSender<Self>) {
-        match msg {
+        let choice = match msg {
             InputMsg::Chosen(choice) => {
                 println!("InputMsg::Chosen {choice:?}");
-                self.choice = Some(choice);
-                relm4::main_application().quit();
+                Some(choice)
             }
             InputMsg::Cancelled => {
                 println!("InputMsg::Cancelled");
-                self.choice = None;
-                relm4::main_application().quit();
+                None
             }
-        }
+        };
+
+        // All input messages share this set and quit code;
+        *self.result.borrow_mut() = choice;
+        relm4::main_application().quit();
     }
 
     fn update_view(&self, widgets: &mut Self::Widgets, _sender: ComponentSender<Self>) {}
