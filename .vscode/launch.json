@@ -6,7 +6,7 @@
 	"configurations": [
 		{
 			"name": "Python: Project QT6",
-			"type": "python",
+			"type": "debugpy",
 			"request": "launch",
 			"module": "uchoose.uchoose",
 			"cwd": "${workspaceFolder}",
@@ -18,7 +18,7 @@
 		},
 		{
 			"name": "Python: Project QT5",
-			"type": "python",
+			"type": "debugpy",
 			"request": "launch",
 			"module": "uchoose.uchoose",
 			"cwd": "${workspaceFolder}",
@@ -30,7 +30,7 @@
 		},
 		{
 			"name": "Python: Project GTK",
-			"type": "python",
+			"type": "debugpy",
 			"request": "launch",
 			"module": "uchoose.uchoose",
 			"cwd": "${workspaceFolder}",
@@ -42,7 +42,7 @@
 		},
 		{
 			"name": "Python: Project CLI",
-			"type": "python",
+			"type": "debugpy",
 			"request": "launch",
 			"program": "${workspaceFolder}/uchoose/uchoose.py",
 			"args": [
@@ -52,24 +52,24 @@
 		},
 		{
 			"name": "Python: Module",
-			"type": "python",
+			"type": "debugpy",
 			"request": "launch",
 			"module": "uchoose.uchoose",
 			"console": "integratedTerminal"
 		},
 		{
 			"name": "Python: Project (Integrated Terminal)",
-			"type": "python",
+			"type": "debugpy",
 			"request": "launch",
 			"program": "${workspaceFolder}/uchoose/uchoose.py",
 			"console": "integratedTerminal"
 		},
 		{
 			"name": "Python: Current File (External Terminal)",
-			"type": "python",
+			"type": "debugpy",
 			"request": "launch",
 			"program": "${file}",
 			"console": "externalTerminal"
-		}
+		},
 	]
 }
