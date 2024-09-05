@@ -8,6 +8,7 @@ use providers::BrowserEntry;
 mod providers;
 mod ui;
 
+const DEFAULT_OPTION: i32 = 0;
 static DBG_URL: &str = "http://example.com/this/is.a.url?all=right";
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
@@ -69,21 +70,26 @@ fn main() {
     println!("\tURL: {}", cli.url);
 
     match cli.ui {
-        UI::CLI => return choose_and_execute(ui::ui_cli::chooser, cli.url),
-        UI::GTK => return choose_and_execute(ui::ui_gtk4::chooser, cli.url),
-        UI::Relm => return choose_and_execute(ui::ui_relm4::chooser, cli.url),
+        UI::CLI => return choose_and_execute(ui::ui_cli::chooser, cli.url, DEFAULT_OPTION),
+        UI::GTK => return choose_and_execute(ui::ui_gtk4::chooser, cli.url, DEFAULT_OPTION),
+        UI::Relm => return choose_and_execute(ui::ui_relm4::chooser, cli.url, DEFAULT_OPTION),
         UI::Iced => unimplemented!(),
         UI::TestProviders => return providers::main_dev(),
     }
 }
 
-fn choose_and_execute(chooser: ui::Chooser, url: String) {
-    const DEFAULT_OPTION: ui::Choice = 0;
-
+// default: 0 is the 1st in the list; 1 is the 2nd; -1 is the last; -2 is the second to last;
+fn choose_and_execute(chooser: ui::Chooser, url: String, default: i32) {
     // Choose
     let browser_list: Vec<BrowserEntry> = providers::get_browsers_list();
 
-    let choice = chooser(url, &browser_list, DEFAULT_OPTION);
+    let _default: ui::Choice = if default < 0 {
+        (browser_list.len() as i32 + default).max(0)
+    } else {
+        default
+    } as ui::Choice;
+
+    let choice = chooser(url, &browser_list, _default);
     let browser = browser_list[choice].clone();
 
     println!("CHOICE: {:?} [{:#?}]", choice, browser);
