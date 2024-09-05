@@ -6,7 +6,7 @@
 		}
 	],
 	"settings": {
-		"lldb.verboseLogging": true
+		"editor.formatOnSave": true
 	},
 	"extensions": {
 		"recommendations": [
