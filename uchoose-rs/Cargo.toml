@@ -6,10 +6,12 @@ authors = ["Allan Daemon"]
 description = "Utility to choose how to open a URL instead of a default browser"
 repository = "https://github.com/AllanDaemon/uchoose"
 license = 'GPL-3.0-or-later'
-keywords = ['browser', 'default', 'url opener','freedesktop', 'xdg']
+keywords = ['browser', 'default', 'url opener', 'freedesktop', 'xdg']
 
 
 [dependencies]
 clap = { version = "4.5.16", features = ["derive"] }
 gtk = { version = "0.9.1", package = "gtk4", features = ["v4_14"] }
 rust-ini = "0.21.1"
+relm4 = "0.9.0"
+relm4-components = "0.9.1"
