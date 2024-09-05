@@ -23,6 +23,10 @@ enum UI {
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
 struct Cli {
+    #[arg(default_value_t = DEFAULT_OPTION)]
+    #[arg(short, long)]
+    default: i32,
+
     #[arg(value_enum)]
     #[arg(default_value_t = UI::GTK)]
     #[arg(short, long)]
@@ -70,9 +74,9 @@ fn main() {
     println!("\tURL: {}", cli.url);
 
     match cli.ui {
-        UI::CLI => return choose_and_execute(ui::ui_cli::chooser, cli.url, DEFAULT_OPTION),
-        UI::GTK => return choose_and_execute(ui::ui_gtk4::chooser, cli.url, DEFAULT_OPTION),
-        UI::Relm => return choose_and_execute(ui::ui_relm4::chooser, cli.url, DEFAULT_OPTION),
+        UI::CLI => return choose_and_execute(ui::ui_cli::chooser, cli.url, cli.default),
+        UI::GTK => return choose_and_execute(ui::ui_gtk4::chooser, cli.url, cli.default),
+        UI::Relm => return choose_and_execute(ui::ui_relm4::chooser, cli.url, cli.default),
         UI::Iced => unimplemented!(),
         UI::TestProviders => return providers::main_dev(),
     }
