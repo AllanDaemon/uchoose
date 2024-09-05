@@ -6,7 +6,7 @@ use super::Choice;
 use crate::providers::BrowserEntry;
 
 const APP_ID: &str = "gg.allan.uchoose.rs.relm4";
-const MARGIN: i32 = 16;
+const PADDING_SIZE: i32 = 16;
 const UI_SCALE: f64 = 1.5;
 
 struct UchooseApp {
@@ -80,11 +80,12 @@ impl SimpleComponent for UchooseApp {
         let model = UchooseApp { choice: None };
 
         let label = gtk::Label::new(Some(&init_params.url));
-        label.set_margin_all(5);
+        label.set_margin_all(PADDING_SIZE);
+        label.set_selectable(true); // Set windows focus latter to avoid starting selected
 
         let vbox = gtk::Box::builder()
             .orientation(gtk::Orientation::Vertical)
-            .spacing(5)
+            .spacing(PADDING_SIZE)
             .build();
         vbox.set_margin_all(5);
         vbox.append(&label);
@@ -92,48 +93,44 @@ impl SimpleComponent for UchooseApp {
 
         let icon_theme = gtk::IconTheme::default();
 
-        for (i, entry) in init_params.browser_list.iter().enumerate() {
+        for (idx_btn, entry) in init_params.browser_list.iter().enumerate() {
             let label = gtk::Label::new(Some(&entry.name));
 
-
-            let icon_size = gtk::IconSize::Large;
-
-            let icon_paintable = icon_theme.lookup_icon(
-                &entry.icon,
-                &["utilities-terminal"],
-                32,
-                1,
-                gtk::TextDirection::Ltr,
-                gtk::IconLookupFlags::PRELOAD,
-            );
-
-            // let icon = gtk::Image::from_icon_name(&entry.icon);
-            // let icon = gtk::Image::from_paintable(Some(&icon_paintable));
-            let icon = gtk::Image::builder().icon_name(entry.icon.to_owned()).icon_size(icon_size).build();
+            let icon = gtk::Image::builder()
+                .icon_name(entry.icon.to_owned())
+                .icon_size(gtk::IconSize::Large)
+                .build();
 
             let btn_box = gtk::Box::builder()
                 .orientation(gtk::Orientation::Horizontal)
-                .spacing(MARGIN)
+                .spacing(PADDING_SIZE)
                 .build();
             btn_box.append(&icon);
             btn_box.append(&label);
 
+            let btn_tooltip_text = match entry.exec.as_ref() {
+                None => String::new(),
+                Some(s) => s.to_string(),
+            };
+            let is_default: bool = idx_btn == init_params.default;
+
             let btn = gtk::Button::builder()
-                // .label(entry.name.to_owned())
-                // .icon_name(entry.icon.to_owned())
                 .child(&btn_box)
-                // .has_frame(true)
-                // .margin_top(8)
-                // .margin_bottom(8)
+                .tooltip_text(btn_tooltip_text)
+                .receives_default(is_default)
                 .build();
 
             vbox.append(&btn);
+
+            if idx_btn == init_params.default {
+                gtk::prelude::GtkWindowExt::set_focus(&window, Some(&btn));
+            }
 
             btn.connect_clicked(clone!(
                 #[strong]
                 sender,
                 move |_| {
-                    sender.input(InputMsg::Chosen(i));
+                    sender.input(InputMsg::Chosen(idx_btn));
                 }
             ));
         }
