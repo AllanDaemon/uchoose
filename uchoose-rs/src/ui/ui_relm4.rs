@@ -3,7 +3,7 @@ use std::rc::Rc;
 
 use gtk::glib::clone;
 use gtk::prelude::*;
-use relm4::prelude::*;
+use relm4::{prelude::*, RelmObjectExt};
 
 use super::{Choice, ChoiceIndex};
 use crate::providers::BrowserEntry;
@@ -88,6 +88,8 @@ impl SimpleComponent for UchooseApp {
         window: Self::Root,
         sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
+        chooser_cancel_connect(sender.clone(), window.clone());
+
         let model = UchooseApp {
             result: init_params.result,
         };
@@ -170,4 +172,35 @@ impl SimpleComponent for UchooseApp {
     }
 
     fn update_view(&self, widgets: &mut Self::Widgets, _sender: ComponentSender<Self>) {}
+}
+
+fn chooser_cancel_connect(sender: ComponentSender<UchooseApp>, window: gtk::Window) {
+    // Abort when press esc
+    let event_controler = gtk::EventControllerKey::new();
+    event_controler.connect_key_pressed(clone!(
+        #[strong]
+        sender,
+        move |this: &gtk::EventControllerKey,
+              keyval: gtk::gdk::Key,
+              keycode: u32,
+              state: gtk::gdk::ModifierType| {
+            if keyval == gtk::gdk::Key::Escape {
+                println!("ESC");
+                sender.input(InputMsg::Cancelled);
+                return gtk::glib::Propagation::Stop;
+            }
+            gtk::glib::Propagation::Proceed
+        },
+    ));
+    window.add_controller(event_controler);
+
+    // Abort when close the window
+    window.connect_close_request(clone!(
+        #[strong]
+        sender,
+        move |_| {
+            sender.input(InputMsg::Cancelled);
+            gtk::glib::Propagation::Stop
+        }
+    ));
 }
