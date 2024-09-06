@@ -24,6 +24,12 @@ pub enum UI {
     TestProviders,
 }
 
+#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
+pub enum ClipboardBackend {
+    Arboard,
+    Xclip,
+}
+
 #[derive(Parser, Clone, Debug)]
 #[command(version, about, long_about = None)]
 pub struct Cli {
@@ -34,6 +40,12 @@ pub struct Cli {
     #[arg(default_value_t = DEFAULT_UI_SCALE)]
     #[arg(short = 's', long)]
     ui_scale: f64,
+
+    #[arg(value_enum)]
+    #[arg(default_value_t = ClipboardBackend::Xclip)]
+    #[arg(long)]
+    #[arg(help = "Which clipboard backend to use for copy")]
+    clipboard_backend: ClipboardBackend,
 
     #[arg(value_enum)]
     #[arg(default_value_t = UI::Relm)]
@@ -133,11 +145,22 @@ fn execute(url: &str, entry: &BrowserEntry) {
 
     match &entry.action {
         EntryAction::None => (),
-        EntryAction::Clipboard => execute_clipboad(url),
+        EntryAction::Clipboard => execute_clipboad(url, get_cli_args().clipboard_backend),
         EntryAction::Exec(exec) => execute_exec(url, exec),
     }
 }
 
-fn execute_clipboad(url: &str) {}
+fn execute_clipboad(url: &str, clipboard_backend: ClipboardBackend) {
+    match clipboard_backend {
+        ClipboardBackend::Arboard => {
+            let mut clipboard = arboard::Clipboard::new().unwrap();
+            clipboard.set_text(url).unwrap();
+            println!("URL copied to clipboard: {url}");
+        }
+        ClipboardBackend::Xclip => {
+            // try xclip -selection clipboard
+        }
+    }
+}
 
 fn execute_exec(url: &str, exec: &str) {}
