@@ -3,7 +3,8 @@
 #![allow(unused)]
 
 use clap::{Parser, ValueEnum};
-use providers::BrowserEntry;
+use gtk::gdk::Clipboard;
+use providers::{BrowserEntry, EntryAction};
 
 mod providers;
 mod ui;
@@ -104,4 +105,19 @@ fn choose_and_execute(chooser: ui::Chooser, url: String, default_option: i32) {
     println!("CHOICE: {:?} [{:#?}]", choice, entry);
 
     // Execute
+    execute(&url, &entry)
 }
+
+fn execute(url: &str, entry: &BrowserEntry) {
+    println!("Executing {entry:?}");
+
+    match &entry.action {
+        EntryAction::None => (),
+        EntryAction::Clipboard => execute_clipboad(url),
+        EntryAction::Exec(exec) => execute_exec(url, exec),
+    }
+}
+
+fn execute_clipboad(url: &str) {}
+
+fn execute_exec(url: &str, exec: &str) {}
