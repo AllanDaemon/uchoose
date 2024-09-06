@@ -27,6 +27,8 @@ pub enum UI {
 pub enum ClipboardBackend {
     Arboard,
     Xclip,
+    Gtk,
+    CliClipboard,
 }
 
 #[derive(Parser, Clone, Debug)]
