@@ -12,6 +12,7 @@ mod providers;
 mod ui;
 
 const DEFAULT_OPTION: i32 = 0; // Copy to clipboard entry
+const DEFAULT_UI_SCALE: f64 = 1.5;
 static DBG_URL: &str = "http://example.com/this/is.a.url?all=right";
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
@@ -29,6 +30,10 @@ pub struct Cli {
     #[arg(default_value_t = DEFAULT_OPTION)]
     #[arg(short, long = "default")]
     default_option: i32,
+
+    #[arg(default_value_t = DEFAULT_UI_SCALE)]
+    #[arg(short = 's', long)]
+    ui_scale: f64,
 
     #[arg(value_enum)]
     #[arg(default_value_t = UI::Relm)]

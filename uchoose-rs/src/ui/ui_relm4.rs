@@ -6,11 +6,11 @@ use gtk::prelude::*;
 use relm4::{prelude::*, RelmObjectExt};
 
 use super::{Choice, ChoiceIndex};
+use crate::get_cli_args;
 use crate::providers::{BrowserEntry, EntryAction};
 
 const APP_ID: &str = "gg.allan.uchoose.rs.relm4";
 const PADDING_SIZE: i32 = 16;
-const UI_SCALE: f64 = 1.5;
 
 struct UchooseApp {
     result: Rc<RefCell<Choice>>, // The way to get write the result back to us
@@ -75,7 +75,7 @@ impl SimpleComponent for UchooseApp {
 
     fn init_root() -> Self::Root {
         let win = gtk::Window::builder().title("uChoose").build();
-        set_scale(&win, UI_SCALE);
+        set_scale(&win, get_cli_args().ui_scale);
         win
     }
 
