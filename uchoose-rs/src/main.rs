@@ -15,7 +15,7 @@ const DEFAULT_OPTION: i32 = 0; // Copy to clipboard entry
 static DBG_URL: &str = "http://example.com/this/is.a.url?all=right";
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
-enum UI {
+pub enum UI {
     CLI,
     GTK,
     Relm,
@@ -23,9 +23,9 @@ enum UI {
     TestProviders,
 }
 
-#[derive(Parser)]
+#[derive(Parser, Clone, Debug)]
 #[command(version, about, long_about = None)]
-struct Cli {
+pub struct Cli {
     #[arg(default_value_t = DEFAULT_OPTION)]
     #[arg(short, long = "default")]
     default_option: i32,
@@ -57,20 +57,13 @@ struct Cli {
     url: String,
 }
 
-static _CLI_OPTIONS: Mutex<Option<Arc<Cli>>> = Mutex::new(None);
+static _CLI_ARGS: Mutex<Option<Arc<Cli>>> = Mutex::new(None);
 
-fn get_cli() -> Arc<Cli> {
-    // let r = _CLI_OPTIONS.lock().unwrap().unwrap().clone();
-    // let r1 = _CLI_OPTIONS.lock();
-    // let r2 = r1.unwrap();
-    // let r3 = r2.clone();
-    // let r4 = r3.clone().unwrap();
-    // r4
-
-    _CLI_OPTIONS.lock().unwrap().clone().clone().unwrap()
+pub fn get_cli_args() -> Arc<Cli> {
+    _CLI_ARGS.lock().unwrap().clone().clone().unwrap()
 }
 
-fn parse_args() -> Cli {
+fn parse_cli_args() -> Cli {
     let mut cli = Cli::parse();
 
     if cli.cli {
@@ -89,12 +82,12 @@ fn parse_args() -> Cli {
     println!("\tUI: {:?}", cli.ui);
     println!("\tURL: {}", cli.url);
 
-    *_CLI_OPTIONS.lock().unwrap() = Some(Arc::new(cli.clone()));
+    *_CLI_ARGS.lock().unwrap() = Some(Arc::new(cli.clone()));
     cli
 }
 
 fn main() {
-    let cli = parse_args();
+    let cli = parse_cli_args();
 
     match cli.ui {
         UI::CLI => return choose_and_execute(ui::ui_cli::chooser, cli.url, cli.default_option),
