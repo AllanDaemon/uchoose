@@ -41,6 +41,9 @@ fn execute(url: &str, entry: &BrowserEntry) {
 
 fn execute_clipboad(url: &str, clipboard_backend: ClipboardBackend) {
     match clipboard_backend {
+        ClipboardBackend::Xclip => {
+            crate::clipboard_xclip::clipboard_set_text(url);
+        }
         ClipboardBackend::Arboard => {
             let mut clipboard = arboard::Clipboard::new().unwrap();
             clipboard.set_text(url).unwrap();

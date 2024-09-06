@@ -6,6 +6,7 @@ use std::sync::{Arc, Mutex};
 
 use clap::{Parser, ValueEnum};
 
+mod clipboard_xclip;
 mod execution;
 mod providers;
 mod ui;
