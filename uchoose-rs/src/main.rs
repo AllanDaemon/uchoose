@@ -80,7 +80,7 @@ pub fn get_cli_args() -> Arc<Cli> {
     _CLI_ARGS.lock().unwrap().clone().clone().unwrap()
 }
 
-fn parse_cli_args() -> Cli {
+fn setup_cli_args() -> Cli {
     let mut cli = Cli::parse();
 
     if cli.cli {
@@ -104,12 +104,18 @@ fn parse_cli_args() -> Cli {
 }
 
 fn main() {
-    let cli = parse_cli_args();
+    let cli_args = setup_cli_args();
 
-    match cli.ui {
-        UI::CLI => return choose_and_execute(ui::ui_cli::chooser, cli.url, cli.default_option),
-        UI::GTK => return choose_and_execute(ui::ui_gtk4::chooser, cli.url, cli.default_option),
-        UI::Relm => return choose_and_execute(ui::ui_relm4::chooser, cli.url, cli.default_option),
+    match cli_args.ui {
+        UI::CLI => {
+            return choose_and_execute(ui::ui_cli::chooser, cli_args.url, cli_args.default_option)
+        }
+        UI::GTK => {
+            return choose_and_execute(ui::ui_gtk4::chooser, cli_args.url, cli_args.default_option)
+        }
+        UI::Relm => {
+            return choose_and_execute(ui::ui_relm4::chooser, cli_args.url, cli_args.default_option)
+        }
         UI::Iced => unimplemented!(),
         UI::TestProviders => return providers::main_dev(),
     }
