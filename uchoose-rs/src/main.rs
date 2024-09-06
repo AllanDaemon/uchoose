@@ -2,6 +2,8 @@
 #![allow(dead_code)]
 #![allow(unused)]
 
+use std::sync::{Arc, Mutex};
+
 use clap::{Parser, ValueEnum};
 use gtk::gdk::Clipboard;
 use providers::{BrowserEntry, EntryAction};
@@ -55,7 +57,20 @@ struct Cli {
     url: String,
 }
 
-fn main() {
+static _CLI_OPTIONS: Mutex<Option<Arc<Cli>>> = Mutex::new(None);
+
+fn get_cli() -> Arc<Cli> {
+    // let r = _CLI_OPTIONS.lock().unwrap().unwrap().clone();
+    // let r1 = _CLI_OPTIONS.lock();
+    // let r2 = r1.unwrap();
+    // let r3 = r2.clone();
+    // let r4 = r3.clone().unwrap();
+    // r4
+
+    _CLI_OPTIONS.lock().unwrap().clone().clone().unwrap()
+}
+
+fn parse_args() -> Cli {
     let mut cli = Cli::parse();
 
     if cli.cli {
@@ -73,6 +88,13 @@ fn main() {
 
     println!("\tUI: {:?}", cli.ui);
     println!("\tURL: {}", cli.url);
+
+    *_CLI_OPTIONS.lock().unwrap() = Some(Arc::new(cli.clone()));
+    cli
+}
+
+fn main() {
+    let cli = parse_args();
 
     match cli.ui {
         UI::CLI => return choose_and_execute(ui::ui_cli::chooser, cli.url, cli.default_option),
