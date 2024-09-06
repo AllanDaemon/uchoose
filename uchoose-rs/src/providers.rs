@@ -11,16 +11,23 @@ const WEB_BROWSER_CATEGORY: &str = "WebBrowser";
 const USE_USER_APPS: bool = false;
 
 #[derive(Debug, Clone)]
+pub enum EntryAction {
+    None,         // Do nothing and exits
+    Clipboard,    // Copy to the clipboard
+    Exec(String), // Execute the new browser according with the Exec from the .desktop file
+}
+
+#[derive(Debug, Clone)]
 pub struct BrowserEntry {
     pub name: Cow<'static, str>,
     pub icon: Cow<'static, str>,
-    pub exec: Option<Cow<'static, str>>,
+    pub action: EntryAction,
 }
 
 pub const CLIPBOARD_ENTRY: BrowserEntry = BrowserEntry {
     name: Cow::Borrowed("Copy to clipboard"),
     icon: Cow::Borrowed("edit-copy-symbolic"),
-    exec: None,
+    action: EntryAction::Clipboard,
 };
 
 fn get_app_desktop_paths(app_dir: &Path) -> Vec<PathBuf> {
@@ -63,12 +70,12 @@ fn get_app_browser_ini(path: &PathBuf) -> Option<BrowserEntry> {
 
     let name = Cow::Owned(desktop_entry.get("Name").unwrap().into());
     let icon = Cow::Owned(desktop_entry.get("Icon").unwrap().into());
-    let exec = Cow::Owned(desktop_entry.get("Exec").unwrap().into());
+    let exec: String = desktop_entry.get("Exec").unwrap().into();
 
     let entry: BrowserEntry = BrowserEntry {
         name: name,
         icon: icon,
-        exec: Some(exec),
+        action: EntryAction::Exec(exec),
     };
 
     return Some(entry);

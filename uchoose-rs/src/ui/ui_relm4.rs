@@ -6,7 +6,7 @@ use gtk::prelude::*;
 use relm4::{prelude::*, RelmObjectExt};
 
 use super::{Choice, ChoiceIndex};
-use crate::providers::BrowserEntry;
+use crate::providers::{BrowserEntry, EntryAction};
 
 const APP_ID: &str = "gg.allan.uchoose.rs.relm4";
 const PADDING_SIZE: i32 = 16;
@@ -123,9 +123,9 @@ impl SimpleComponent for UchooseApp {
             btn_box.append(&icon);
             btn_box.append(&label);
 
-            let btn_tooltip_text = match entry.exec.as_ref() {
-                None => String::new(),
-                Some(s) => s.to_string(),
+            let btn_tooltip_text = match &entry.action {
+                EntryAction::Exec(s) => s,
+                _ => &String::new(),
             };
             let is_default: bool = idx_btn == init_params.default_option;
 
