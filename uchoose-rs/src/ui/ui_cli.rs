@@ -1,11 +1,7 @@
 use super::{Choice, ChoiceIndex};
 use crate::providers::BrowserEntry;
 
-pub fn chooser(
-    url: String,
-    browser_list: &Vec<BrowserEntry>,
-    default_option: ChoiceIndex,
-) -> Choice {
+pub fn chooser(url: &str, browser_list: &Vec<BrowserEntry>, default_option: ChoiceIndex) -> Choice {
     println!("Open: {}", url);
 
     for (i, b) in browser_list.iter().enumerate() {

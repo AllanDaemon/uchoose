@@ -93,7 +93,7 @@ fn choose_and_execute(chooser: ui::Chooser, url: String, default_option: i32) {
         default_option
     } as ui::ChoiceIndex;
 
-    let choice = chooser(url, &browser_list, default_option);
+    let choice = chooser(&url, &browser_list, default_option);
     if let None = choice {
         println!("Choosing cancelled. No action will be taken.");
         return;

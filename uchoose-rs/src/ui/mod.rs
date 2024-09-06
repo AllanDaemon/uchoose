@@ -2,7 +2,7 @@ pub type ChoiceIndex = usize;
 pub type Choice = Option<ChoiceIndex>;
 
 pub type Chooser = fn(
-    url: String,
+    url: &str,
     browser_list: &Vec<crate::providers::BrowserEntry>,
     default_option: ChoiceIndex,
 ) -> Choice;

@@ -30,17 +30,13 @@ struct UchooseParams {
     result: Rc<RefCell<Choice>>, // Used as intermediary to build in the model
 }
 
-pub fn chooser(
-    url: String,
-    browser_list: &Vec<BrowserEntry>,
-    default_option: ChoiceIndex,
-) -> Choice {
+pub fn chooser(url: &str, browser_list: &Vec<BrowserEntry>, default_option: ChoiceIndex) -> Choice {
     println!("Relm4 Open: {}", url);
 
     let result = Rc::new(RefCell::new(None));
 
     let mut choose_params: UchooseParams = UchooseParams {
-        url: url.clone(),
+        url: url.to_string(),
         browser_list: browser_list.clone(),
         default_option: default_option.clone(),
         result: Rc::clone(&result),

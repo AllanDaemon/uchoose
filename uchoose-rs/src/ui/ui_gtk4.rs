@@ -102,15 +102,11 @@ impl UchooseWin {
     fn on_click(&self, choice: Choice) {}
 }
 
-pub fn chooser(
-    url: String,
-    browser_list: &Vec<BrowserEntry>,
-    default_option: ChoiceIndex,
-) -> Choice {
+pub fn chooser(url: &str, browser_list: &Vec<BrowserEntry>, default_option: ChoiceIndex) -> Choice {
     println!("GTK4 Open: {}", url);
 
     let mut chooser: UchooseWin = UchooseWin {
-        url: url.clone(),
+        url: url.to_string(),
         browser_list: browser_list.clone(),
         default_option: default_option.clone(),
         choice: None,
