@@ -1756,6 +1756,7 @@ dependencies = [
  "relm4",
  "relm4-components",
  "rust-ini",
+ "shlex",
 ]
 
 [[package]]
