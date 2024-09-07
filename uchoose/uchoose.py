@@ -19,10 +19,7 @@ UI_LIST = (
 
 # https://developer.gnome.org/integration-guide/stable/desktop-files.html.en#tb-exec-params
 def param_subs(arg:str, url:str) -> str:
-	if r'%u' in arg: arg = arg.replace(r'%u', url)
-	if r'%U' in arg: arg = arg.replace(r'%U', url)
-	if r'%k' in arg: arg = arg.replace(r'%k', url)
-	return arg
+	return arg.replace(r'%U', url).replace(r'%k', url)
 
 def execute(name:str, exec_cmd:str, url:str):
 	print(f"EXECUTING  {exec_cmd!r} @ {url!r}")
