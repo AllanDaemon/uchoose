@@ -1,4 +1,0 @@
-pyxdg  # python3-xdg
-pyperclip  # python3-pyperclip
-PySide2  # python3-pyside2\*
-pyside6  # 
