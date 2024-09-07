@@ -95,6 +95,16 @@ fn params_prepare(url: &str, exec: &str) -> (String, Vec<String>) {
 
 fn execute_exec(url: &str, exec: &str) {
     let (cmd, params) = params_prepare(url, exec);
+    println!("Exec {cmd} {params:#?}");
     dbg!(&cmd);
     dbg!(&params);
+
+    let res = std::process::Command::new(cmd).args(&params).spawn();
+
+    if let Err(err) = res {
+        eprintln!("Error launching the selected program");
+        eprintln!("{:#?}", err);
+    } else {
+        println!("Launched successfully")
+    }
 }
