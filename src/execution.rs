@@ -26,7 +26,7 @@ pub fn choose_and_execute(chooser: ui::Chooser, url: String, default_option: i32
     println!("CHOICE: {:?} [{:#?}]", choice, entry);
 
     // Execute
-    execute(&url, &entry)
+    // execute(&url, &entry)
 }
 
 fn execute(url: &str, entry: &BrowserEntry) {
