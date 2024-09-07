@@ -5,71 +5,65 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Python: Project QT6",
-			"type": "debugpy",
+			"type": "lldb",
 			"request": "launch",
-			"module": "uchoose.uchoose",
-			"cwd": "${workspaceFolder}",
+			"name": "uchoose relm",
+			"cargo": {
+				"args": [
+					"build",
+					"--bin=uchoose",
+					"--package=uchoose"
+				],
+				"filter": {
+					"name": "uchoose",
+					"kind": "bin"
+				}
+			},
 			"args": [
-				"-u",
-				"qt6"
+				"--ui",
+				"relm"
 			],
-			"console": "integratedTerminal"
+			"cwd": "${workspaceFolder}"
 		},
 		{
-			"name": "Python: Project QT5",
-			"type": "debugpy",
+			"type": "lldb",
 			"request": "launch",
-			"module": "uchoose.uchoose",
-			"cwd": "${workspaceFolder}",
+			"name": "uchoose gtk",
+			"cargo": {
+				"args": [
+					"build",
+					"--bin=uchoose",
+					"--package=uchoose"
+				],
+				"filter": {
+					"name": "uchoose",
+					"kind": "bin"
+				}
+			},
 			"args": [
-				"-u",
-				"qt5"
-			],
-			"console": "integratedTerminal"
-		},
-		{
-			"name": "Python: Project GTK",
-			"type": "debugpy",
-			"request": "launch",
-			"module": "uchoose.uchoose",
-			"cwd": "${workspaceFolder}",
-			"args": [
-				"-u",
+				"--ui",
 				"gtk"
 			],
-			"console": "integratedTerminal"
+			"cwd": "${workspaceFolder}"
 		},
 		{
-			"name": "Python: Project CLI",
-			"type": "debugpy",
+			"type": "lldb",
 			"request": "launch",
-			"program": "${workspaceFolder}/uchoose/uchoose.py",
-			"args": [
-				"--cli"
-			],
-			"console": "integratedTerminal"
-		},
-		{
-			"name": "Python: Module",
-			"type": "debugpy",
-			"request": "launch",
-			"module": "uchoose.uchoose",
-			"console": "integratedTerminal"
-		},
-		{
-			"name": "Python: Project (Integrated Terminal)",
-			"type": "debugpy",
-			"request": "launch",
-			"program": "${workspaceFolder}/uchoose/uchoose.py",
-			"console": "integratedTerminal"
-		},
-		{
-			"name": "Python: Current File (External Terminal)",
-			"type": "debugpy",
-			"request": "launch",
-			"program": "${file}",
-			"console": "externalTerminal"
-		},
+			"name": "Debug unit tests in executable 'uchoose'",
+			"cargo": {
+				"args": [
+					"test",
+					"--no-run",
+					"--bin=uchoose",
+					"--package=uchoose"
+				],
+				"filter": {
+					"name": "uchoose",
+					"kind": "bin"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		}
 	]
 }
