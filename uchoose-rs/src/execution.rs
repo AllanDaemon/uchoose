@@ -66,53 +66,31 @@ fn execute_clipboad(url: &str, clipboard_backend: ClipboardBackend) {
 
 // https://developer.gnome.org/integration-guide/stable/desktop-files.html.en#tb-exec-params
 pub fn param_substitution_simplify(arg: String) -> String {
-    let arg = if arg.contains("%U")  {
-        arg.replace("%U", "%u")
-    } else {
-        arg
-    };
-
-    let arg = if arg.contains("%k") {
-        arg.replace("%k", "%u")
-    } else {
-        arg
-    };
-
-    arg
+    arg.replace("%U", "%u").replace("%k", "%u")
 }
 
 fn params_prepare(url: &str, exec: &str) -> (String, Vec<String>) {
     // split the exec string
     let cmd_parts: Vec<String> = shlex::split(&exec).unwrap();
-    dbg!(&cmd_parts);
     let mut converted: Vec<String> = cmd_parts
         .into_iter()
         .map(param_substitution_simplify)
         .collect();
-    // dbg!(&converted);
 
     // If url parameter isn't in the arguments, add it
+    // TODO: Handle if %u isn't a whole parameter
     if !converted.contains(&String::from("%u")) {
         converted.push("%u".into());
     }
-    // dbg!(&converted);
 
     // Convert all %u to the url
     let mut final_args: Vec<String> = converted
         .into_iter()
-        .map(|arg: String| -> String {
-            if arg.contains(&"%u") {
-                arg.replace("%u", url)
-            } else {
-                arg
-            }
-        })
+        .map(|arg| arg.replace("%u", url))
         .collect();
-    dbg!(&final_args);
 
-	let argv0 = final_args.remove(0);
-
-	(argv0, final_args)
+    let argv0 = final_args.remove(0);
+    (argv0, final_args)
 }
 
 fn execute_exec(url: &str, exec: &str) {
