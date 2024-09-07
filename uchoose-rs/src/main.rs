@@ -50,7 +50,7 @@ pub struct Cli {
     clipboard_backend: ClipboardBackend,
 
     #[arg(value_enum)]
-    #[arg(default_value_t = UI::Relm)]
+    #[arg(default_value_t = UI::GTK)]
     #[arg(short, long)]
     #[arg(help = "Choose the ui to use")]
     ui: UI,

@@ -35,6 +35,7 @@ impl UchooseWin {
         println!("App create");
         let app = Application::builder().application_id(APP_ID).build();
 
+        // println!("App activate");
         // app.connect_activate(|app| self.build_uchoose(app));
 
         println!("App build");
@@ -51,13 +52,12 @@ impl UchooseWin {
 
     fn build_uchoose(&mut self, app: &Application) {
         // let icon_theme;
-
         let vbox = gtk::Box::builder()
-            .orientation(gtk::Orientation::Vertical)
-            .margin_start(2 * MARGIN)
-            .margin_end(2 * MARGIN)
-            .margin_top(MARGIN)
-            .margin_bottom(MARGIN)
+            // .orientation(gtk::Orientation::Vertical)
+            // .margin_start(2 * MARGIN)
+            // .margin_end(2 * MARGIN)
+            // .margin_top(MARGIN)
+            // .margin_bottom(MARGIN)
             .build();
 
         let window: ApplicationWindow = ApplicationWindow::builder()
