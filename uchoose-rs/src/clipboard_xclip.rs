@@ -32,7 +32,6 @@ pub fn clipboard_set_text(text: &str) -> Result<(), std::io::Error> {
     };
 
     // Write the text to stdin
-    println!("TO WRITE");
     let text_bytes = text.as_bytes();
     child.stdin.unwrap().write_all(text_bytes)?;
     Ok(())
