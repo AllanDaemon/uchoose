@@ -6,6 +6,7 @@ use std::sync::{Arc, Mutex};
 
 use clap::{Parser, ValueEnum};
 
+#[cfg(feature = "xclip")]
 mod clipboard_xclip;
 mod execution;
 mod providers;
@@ -26,9 +27,13 @@ pub enum UI {
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
 pub enum ClipboardBackend {
+    #[cfg(feature = "arboard")]
     Arboard,
+    #[cfg(feature = "xclip")]
     Xclip,
+    // #[cfg(feature = "clipboard_extras")]
     Gtk,
+    #[cfg(feature = "clipboard_extras")]
     CliClipboard,
 }
 

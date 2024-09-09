@@ -1,3 +1,4 @@
+// #[cfg(feature = "clipboard_extras")]
 use gtk::prelude::DisplayExt; // For GTK clipboard
 
 use crate::providers::{get_browsers_list, BrowserEntry, EntryAction};
@@ -43,19 +44,23 @@ fn execute(url: &str, entry: &BrowserEntry) {
 
 fn execute_clipboad(url: &str, clipboard_backend: ClipboardBackend) {
     match clipboard_backend {
+        #[cfg(feature = "xclip")]
         ClipboardBackend::Xclip => {
             crate::clipboard_xclip::clipboard_set_text(url);
         }
+        #[cfg(feature = "arboard")]
         ClipboardBackend::Arboard => {
             let mut clipboard = arboard::Clipboard::new().unwrap();
             clipboard.set_text(url).unwrap();
             println!("URL copied to clipboard: {url}");
         }
+        // #[cfg(feature = "clipboard_extras")]
         ClipboardBackend::Gtk => {
             let display = gtk::gdk::Display::default().unwrap();
             let clipboard = display.clipboard();
             clipboard.set_text(url);
         }
+        #[cfg(feature = "clipboard_extras")]
         ClipboardBackend::CliClipboard => {
             cli_clipboard::set_contents(url.to_owned()).unwrap();
         }
