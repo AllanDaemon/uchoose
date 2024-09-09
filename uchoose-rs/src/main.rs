@@ -19,8 +19,11 @@ static DBG_URL: &str = "http://example.com/this/is.a.url?all=right";
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
 pub enum UI {
     CLI,
+    #[cfg(feature = "gtk4")]
     GTK,
+    #[cfg(feature = "relm4")]
     Relm,
+    #[cfg(feature = "iced")]
     Iced,
     TestProviders,
 }
@@ -31,7 +34,7 @@ pub enum ClipboardBackend {
     Arboard,
     #[cfg(feature = "xclip")]
     Xclip,
-    // #[cfg(feature = "clipboard_extras")]
+    #[cfg(feature = "gtk4")]
     Gtk,
     #[cfg(feature = "clipboard_extras")]
     CliClipboard,
@@ -65,14 +68,17 @@ pub struct Cli {
     #[arg(help = "Same as --ui cli")]
     cli: bool,
 
+    #[cfg(feature = "gtk4")]
     #[arg(short, long)]
     #[arg(help = "Same as --ui gtk")]
     gtk: bool,
 
+    #[cfg(feature = "relm4")]
     #[arg(short, long)]
     #[arg(help = "Same as --ui relm")]
     relm: bool,
 
+    #[cfg(feature = "iced")]
     #[arg(short, long)]
     #[arg(help = "Same as --ui iced")]
     iced: bool,
@@ -93,12 +99,15 @@ fn setup_cli_args() -> Cli {
     if cli.cli {
         cli.ui = UI::CLI;
     }
+    #[cfg(feature = "gtk4")]
     if cli.gtk {
         cli.ui = UI::GTK;
     }
+    #[cfg(feature = "relm4")]
     if cli.relm {
         cli.ui = UI::Relm;
     }
+    #[cfg(feature = "iced")]
     if cli.iced {
         cli.ui = UI::Iced;
     }
@@ -121,6 +130,7 @@ fn main() {
                 cli_args.default_option,
             )
         }
+        #[cfg(feature = "gtk4")]
         UI::GTK => {
             return execution::choose_and_execute(
                 ui::ui_gtk4::chooser,
@@ -128,6 +138,7 @@ fn main() {
                 cli_args.default_option,
             )
         }
+        #[cfg(feature = "relm4")]
         UI::Relm => {
             return execution::choose_and_execute(
                 ui::ui_relm4::chooser,
@@ -135,6 +146,7 @@ fn main() {
                 cli_args.default_option,
             )
         }
+        #[cfg(feature = "iced")]
         UI::Iced => unimplemented!(),
         UI::TestProviders => return providers::main_dev(),
     }
