@@ -43,8 +43,8 @@ pub fn chooser(url: &str, browser_list: &Vec<BrowserEntry>, default_option: Choi
     };
 
     // Pass empty args, otherwise it interpret our args as gtk args
-    let gtk_app_arg: Vec<String> = Vec::new();
-    let app = RelmApp::new(APP_ID).with_args(gtk_app_arg);
+    let gtk_app_args: Vec<String> = Vec::new();
+    let app = RelmApp::new(APP_ID).with_args(gtk_app_args);
 
     println!("App will run");
     app.run::<UchooseApp>(choose_params);
