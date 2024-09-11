@@ -83,6 +83,10 @@ pub struct Cli {
     #[arg(help = "Same as --ui iced")]
     iced: bool,
 
+    #[arg(short, long)]
+    #[arg(help = "Do not execute the selected command (dry run for debug)")]
+    no_exec: bool,
+
     #[arg(default_value_t = DBG_URL.to_string())]
     url: String,
 }

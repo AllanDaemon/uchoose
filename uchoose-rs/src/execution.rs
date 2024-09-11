@@ -27,6 +27,11 @@ pub fn choose_and_execute(chooser: ui::Chooser, url: String, default_option: i32
     println!("CHOICE: {:?} [{:#?}]", choice, entry);
 
     // Execute
+    if get_cli_args().no_exec {
+        println!("Skiping execution");
+        return;
+    }
+
     execute(&url, &entry)
 }
 
