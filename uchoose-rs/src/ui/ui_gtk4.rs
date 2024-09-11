@@ -13,8 +13,9 @@ use crate::get_cli_args;
 use crate::providers::{BrowserEntry, EntryAction};
 
 const APP_ID: &str = "gg.allan.uchoose.rs.gkt4";
-const PADDING_SIZE: i32 = 16;
+const PADDING_SIZE: i32 = 12;
 
+// Where to save the user choice. It's already is setup to default none (no action)
 static mut RESULT: Choice = None;
 
 fn get_result() -> Choice {
@@ -56,31 +57,32 @@ fn build_uchoose(
     browser_list: &Vec<BrowserEntry>,
     default_option: ChoiceIndex,
 ) {
+    let ui_scale = get_cli_args().ui_scale;
+    let padding_size: i32 = (PADDING_SIZE as f64 * ui_scale) as i32;
+
     let window: ApplicationWindow = ApplicationWindow::builder()
         .application(app)
         .title("uchoose")
         .build();
     window_exit_on_esc(&window);
-
-    // TODO: MOVE THE FUNCTION TO SHARED MODULE
     super::ui_relm4::set_scale(&window, get_cli_args().ui_scale);
 
     let vbox = gtk::Box::builder()
         .orientation(gtk::Orientation::Vertical)
-        .spacing(PADDING_SIZE)
-        .margin_top(PADDING_SIZE)
-        .margin_bottom(PADDING_SIZE)
-        .margin_start(PADDING_SIZE)
-        .margin_end(PADDING_SIZE)
+        .spacing(padding_size)
+        .margin_top(padding_size)
+        .margin_bottom(padding_size)
+        .margin_start(padding_size)
+        .margin_end(padding_size)
         .build();
 
     let url_label = gtk::Label::builder()
         .label(url)
         .selectable(true) // Set windows focus latter to avoid starting selected
-        .margin_top(PADDING_SIZE)
-        .margin_bottom(PADDING_SIZE)
-        .margin_start(PADDING_SIZE)
-        .margin_end(PADDING_SIZE)
+        .margin_top(padding_size)
+        .margin_bottom(padding_size)
+        .margin_start(padding_size)
+        .margin_end(padding_size)
         .build();
     vbox.append(&url_label);
 
@@ -96,7 +98,7 @@ fn build_uchoose(
 
         let btn_box = gtk::Box::builder()
             .orientation(gtk::Orientation::Horizontal)
-            .spacing(PADDING_SIZE)
+            .spacing(padding_size)
             .build();
         btn_box.append(&icon);
         btn_box.append(&label);
