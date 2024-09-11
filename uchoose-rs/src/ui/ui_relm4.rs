@@ -84,22 +84,22 @@ impl SimpleComponent for UchooseApp {
         window: Self::Root,
         sender: ComponentSender<Self>,
     ) -> ComponentParts<Self> {
-        chooser_cancel_connect(sender.clone(), window.clone());
+        chooser_connect_cancel(sender.clone(), window.clone());
 
         let model = UchooseApp {
             result: init_params.result,
         };
 
-        let label = gtk::Label::new(Some(&init_params.url));
-        label.set_margin_all(PADDING_SIZE);
-        label.set_selectable(true); // Set windows focus latter to avoid starting selected
+        let url_label = gtk::Label::new(Some(&init_params.url));
+        url_label.set_margin_all(PADDING_SIZE);
+        url_label.set_selectable(true); // Set windows focus latter to avoid starting selected
 
         let vbox = gtk::Box::builder()
             .orientation(gtk::Orientation::Vertical)
             .spacing(PADDING_SIZE)
             .build();
-        vbox.set_margin_all(5);
-        vbox.append(&label);
+        vbox.set_margin_all(PADDING_SIZE);
+        vbox.append(&url_label);
         window.set_child(Some(&vbox));
 
         let icon_theme = gtk::IconTheme::default();
@@ -123,16 +123,15 @@ impl SimpleComponent for UchooseApp {
                 EntryAction::Exec(s) => s,
                 _ => &String::new(),
             };
-            let is_default: bool = idx_btn == init_params.default_option;
 
             let btn = gtk::Button::builder()
                 .child(&btn_box)
                 .tooltip_text(btn_tooltip_text)
-                .receives_default(is_default)
                 .build();
 
             vbox.append(&btn);
 
+            // Select the default option to remove the selection from url_label
             if idx_btn == init_params.default_option {
                 gtk::prelude::GtkWindowExt::set_focus(&window, Some(&btn));
             }
@@ -170,7 +169,7 @@ impl SimpleComponent for UchooseApp {
     fn update_view(&self, widgets: &mut Self::Widgets, _sender: ComponentSender<Self>) {}
 }
 
-fn chooser_cancel_connect(sender: ComponentSender<UchooseApp>, window: gtk::ApplicationWindow) {
+fn chooser_connect_cancel(sender: ComponentSender<UchooseApp>, window: gtk::ApplicationWindow) {
     // Abort when press esc
     let event_controler = gtk::EventControllerKey::new();
     event_controler.connect_key_pressed(clone!(
