@@ -33,21 +33,19 @@ pub fn chooser(url: &str, browser_list: &Vec<BrowserEntry>, default_option: Choi
     println!("GTK4 Open: {}", url);
 
     let app = Application::builder().application_id(APP_ID).build();
-    let _browser_list = browser_list.clone();
 
-    let url_clone = url.to_owned().clone();
-
-    // let result_clone = Rc::clone(&result);
-    app.connect_activate(move |app| {
-        build_uchoose(app, &url_clone, &_browser_list.clone(), default_option)
-    });
+    let _url = url.to_owned().clone();
+    app.connect_activate(clone!(
+        #[strong]
+        browser_list,
+        move |app| { build_uchoose(app, &_url, &browser_list, default_option) }
+    ));
 
     println!("App run");
     app.run_with_args(&[] as &[&str]);
     println!("App run out");
 
     let result = get_result();
-    dbg!(&result);
     println!("CHOICE: {:#?}", result);
 
     result
