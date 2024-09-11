@@ -34,11 +34,12 @@ pub fn chooser(url: &str, browser_list: &Vec<BrowserEntry>, default_option: Choi
 
     let app = Application::builder().application_id(APP_ID).build();
 
-    let _url = url.to_owned().clone();
     app.connect_activate(clone!(
         #[strong]
         browser_list,
-        move |app| { build_uchoose(app, &_url, &browser_list, default_option) }
+        #[to_owned]
+        url,
+        move |app| { build_uchoose(app, &url, &browser_list, default_option) }
     ));
 
     println!("App run");
