@@ -14,8 +14,17 @@ use super::{Choice, ChoiceIndex};
 use crate::providers::BrowserEntry;
 
 const APP_ID: &str = "gg.allan.uchoose.rs.gkt4";
-
 const MARGIN: i32 = 16;
+
+static mut RESULT: Choice = None;
+
+fn get_result() -> Choice {
+    unsafe { RESULT }
+}
+
+fn set_result(choice: Choice) {
+    unsafe { RESULT = choice };
+}
 
 #[derive(Debug)]
 struct ChoiceResult(Option<Choice>);
@@ -23,59 +32,25 @@ struct ChoiceResult(Option<Choice>);
 pub fn chooser(url: &str, browser_list: &Vec<BrowserEntry>, default_option: ChoiceIndex) -> Choice {
     println!("GTK4 Open: {}", url);
 
-    let result = Rc::new(RefCell::new(None));
-
     let app = Application::builder().application_id(APP_ID).build();
     let _browser_list = browser_list.clone();
 
     let url_clone = url.to_owned().clone();
 
-    let result_clone = Rc::clone(&result);
-    // app.connect_activate(|app| {
-    //     let vbox = gtk::Box::builder()
-    //         .orientation(gtk::Orientation::Vertical)
-    //         .margin_start(2 * MARGIN)
-    //         .margin_end(2 * MARGIN)
-    //         .margin_top(MARGIN)
-    //         .margin_bottom(MARGIN)
-    //         .build();
-    // });
-    app.connect_activate(clone!(
-        #[strong]
-        result,
-        #[strong]
-        result_clone,
-        move |app| {
-            build_uchoose(
-                app,
-                &url_clone,
-                &_browser_list.clone(),
-                default_option,
-                result_clone,
-            )
-        }
-    ));
-
-    // build_uchoose(
-    //     &app,
-    //     &url_clone,
-    //     &_browser_list.clone(),
-    //     default_option,
-    //     result,
-    // );
-
-    // dbg!(&result);
+    // let result_clone = Rc::clone(&result);
+    app.connect_activate(move |app| {
+        build_uchoose(app, &url_clone, &_browser_list.clone(), default_option)
+    });
 
     println!("App run");
     app.run_with_args(&[] as &[&str]);
     println!("App run out");
 
-    // let _choice: RefCell<Option<ChoiceIndex>> = result;
-    // let choice: Option<ChoiceIndex> = *result.borrow();
-    // dbg!(&result);
-    // println!("CHOICE: {:#?}", result);
+    let result = get_result();
+    dbg!(&result);
+    println!("CHOICE: {:#?}", result);
 
-    None
+    result
 }
 
 fn build_uchoose(
@@ -83,7 +58,6 @@ fn build_uchoose(
     url: &str,
     browser_list: &Vec<BrowserEntry>,
     default: ChoiceIndex,
-    result: Rc<RefCell<Choice>>,
 ) {
     // let icon_theme;
 
@@ -124,11 +98,9 @@ fn build_uchoose(
         btn.connect_clicked(clone!(
             #[strong]
             window,
-            #[strong]
-            result,
             move |_btn| {
                 println!("<BUTTON PRESSED> {}", i);
-                *result.borrow_mut() = Some(i as ChoiceIndex);
+                set_result(Some(i as ChoiceIndex));
                 window.destroy();
             }
         ));
