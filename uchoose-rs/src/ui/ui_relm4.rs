@@ -55,7 +55,7 @@ pub fn chooser(url: &str, browser_list: &Vec<BrowserEntry>, default_option: Choi
 
 struct AppWidgets {}
 
-fn set_scale(win: &gtk::Window, scale: f64) {
+pub fn set_scale(win: &gtk::ApplicationWindow, scale: f64) {
     // Get settings and set scale
     let settings = win.settings();
 
@@ -71,10 +71,10 @@ impl SimpleComponent for UchooseApp {
     type Input = InputMsg;
     type Output = ();
     type Widgets = AppWidgets;
-    type Root = gtk::Window;
+    type Root = gtk::ApplicationWindow;
 
     fn init_root() -> Self::Root {
-        let win = gtk::Window::builder().title("uChoose").build();
+        let win = gtk::ApplicationWindow::builder().title("uChoose").build();
         set_scale(&win, get_cli_args().ui_scale);
         win
     }
@@ -170,7 +170,7 @@ impl SimpleComponent for UchooseApp {
     fn update_view(&self, widgets: &mut Self::Widgets, _sender: ComponentSender<Self>) {}
 }
 
-fn chooser_cancel_connect(sender: ComponentSender<UchooseApp>, window: gtk::Window) {
+fn chooser_cancel_connect(sender: ComponentSender<UchooseApp>, window: gtk::ApplicationWindow) {
     // Abort when press esc
     let event_controler = gtk::EventControllerKey::new();
     event_controler.connect_key_pressed(clone!(
