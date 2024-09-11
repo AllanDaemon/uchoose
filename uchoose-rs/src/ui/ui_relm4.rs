@@ -133,7 +133,7 @@ impl SimpleComponent for UchooseApp {
 
             // Select the default option to remove the selection from url_label
             if idx_btn == init_params.default_option {
-                gtk::prelude::GtkWindowExt::set_focus(&window, Some(&btn));
+                gtk::prelude::RootExt::set_focus(&window, Some(&btn));
             }
 
             btn.connect_clicked(clone!(
