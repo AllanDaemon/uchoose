@@ -86,8 +86,6 @@ fn build_uchoose(
         .build();
     vbox.append(&url_label);
 
-    let icon_theme = gtk::IconTheme::default();
-
     for (idx_btn, entry) in browser_list.iter().enumerate() {
         let label = gtk::Label::new(Some(&entry.name));
 

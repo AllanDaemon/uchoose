@@ -94,8 +94,6 @@ impl SimpleComponent for UchooseApp {
         vbox.append(&url_label);
         window.set_child(Some(&vbox));
 
-        let icon_theme = gtk::IconTheme::default();
-
         for (idx_btn, entry) in init_params.browser_list.iter().enumerate() {
             let label = gtk::Label::new(Some(&entry.name));
 
