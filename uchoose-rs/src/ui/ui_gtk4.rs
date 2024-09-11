@@ -65,7 +65,7 @@ fn build_uchoose(
         .title("uchoose")
         .build();
     window_exit_on_esc(&window);
-    super::ui_relm4::set_scale(&window, get_cli_args().ui_scale);
+    set_scale(&window, get_cli_args().ui_scale);
 
     let vbox = gtk::Box::builder()
         .orientation(gtk::Orientation::Vertical)
@@ -156,4 +156,15 @@ fn window_exit_on_esc(window: &gtk::ApplicationWindow) {
         },
     ));
     window.add_controller(event_controler);
+}
+
+pub fn set_scale(win: &gtk::ApplicationWindow, scale: f64) {
+    // Get settings and set scale
+    let settings = win.settings();
+
+    let curr_dpi: i32 = settings.gtk_xft_dpi();
+    let new_dpi: i32 = (scale * (curr_dpi as f64)) as i32;
+    settings.set_gtk_xft_dpi(new_dpi);
+
+    // println!("gtk-xft-dpi: {:#?} ({}*1024)", curr_dpi, curr_dpi / 1024);
 }

@@ -55,17 +55,6 @@ pub fn chooser(url: &str, browser_list: &Vec<BrowserEntry>, default_option: Choi
 
 struct AppWidgets {}
 
-pub fn set_scale(win: &gtk::ApplicationWindow, scale: f64) {
-    // Get settings and set scale
-    let settings = win.settings();
-
-    let curr_dpi: i32 = settings.gtk_xft_dpi();
-    let new_dpi: i32 = (scale * (curr_dpi as f64)) as i32;
-    settings.set_gtk_xft_dpi(new_dpi);
-
-    // println!("gtk-xft-dpi: {:#?} ({}*1024)", curr_dpi, curr_dpi / 1024);
-}
-
 impl SimpleComponent for UchooseApp {
     type Init = UchooseParams;
     type Input = InputMsg;
@@ -75,7 +64,7 @@ impl SimpleComponent for UchooseApp {
 
     fn init_root() -> Self::Root {
         let win = gtk::ApplicationWindow::builder().title("uChoose").build();
-        set_scale(&win, get_cli_args().ui_scale);
+        super::ui_gtk4::set_scale(&win, get_cli_args().ui_scale);
         win
     }
 
