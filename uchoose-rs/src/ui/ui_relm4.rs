@@ -10,7 +10,7 @@ use crate::get_cli_args;
 use crate::providers::{BrowserEntry, EntryAction};
 
 const APP_ID: &str = "gg.allan.uchoose.rs.relm4";
-const PADDING_SIZE: i32 = 16;
+const PADDING_SIZE: i32 = 12;
 
 struct UchooseApp {
     result: Rc<RefCell<Choice>>, // The way to get write the result back to us
@@ -90,15 +90,18 @@ impl SimpleComponent for UchooseApp {
             result: init_params.result,
         };
 
+        let ui_scale = get_cli_args().ui_scale;
+        let padding_size: i32 = (PADDING_SIZE as f64 * ui_scale) as i32;
+
         let url_label = gtk::Label::new(Some(&init_params.url));
-        url_label.set_margin_all(PADDING_SIZE);
+        url_label.set_margin_all(padding_size);
         url_label.set_selectable(true); // Set windows focus latter to avoid starting selected
 
         let vbox = gtk::Box::builder()
             .orientation(gtk::Orientation::Vertical)
-            .spacing(PADDING_SIZE)
+            .spacing(padding_size)
             .build();
-        vbox.set_margin_all(PADDING_SIZE);
+        vbox.set_margin_all(padding_size);
         vbox.append(&url_label);
         window.set_child(Some(&vbox));
 
@@ -114,7 +117,7 @@ impl SimpleComponent for UchooseApp {
 
             let btn_box = gtk::Box::builder()
                 .orientation(gtk::Orientation::Horizontal)
-                .spacing(PADDING_SIZE)
+                .spacing(padding_size)
                 .build();
             btn_box.append(&icon);
             btn_box.append(&label);
