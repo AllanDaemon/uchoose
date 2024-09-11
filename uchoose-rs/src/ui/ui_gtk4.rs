@@ -4,17 +4,16 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-// use std::borrow::Borrow;
-
 use gtk::glib::clone;
+use gtk::prelude::*;
 use gtk::{glib, Application, ApplicationWindow};
-use gtk::{prelude::*, Window};
 
 use super::{Choice, ChoiceIndex};
-use crate::providers::BrowserEntry;
+use crate::get_cli_args;
+use crate::providers::{BrowserEntry, EntryAction};
 
 const APP_ID: &str = "gg.allan.uchoose.rs.gkt4";
-const MARGIN: i32 = 16;
+const PADDING_SIZE: i32 = 16;
 
 static mut RESULT: Choice = None;
 
@@ -55,56 +54,104 @@ fn build_uchoose(
     app: &Application,
     url: &str,
     browser_list: &Vec<BrowserEntry>,
-    default: ChoiceIndex,
+    default_option: ChoiceIndex,
 ) {
-    // let icon_theme;
+    let window: ApplicationWindow = ApplicationWindow::builder()
+        .application(app)
+        .title("uchoose")
+        .build();
+    window_exit_on_esc(&window);
+
+    // TODO: MOVE THE FUNCTION TO SHARED MODULE
+    super::ui_relm4::set_scale(&window, get_cli_args().ui_scale);
 
     let vbox = gtk::Box::builder()
         .orientation(gtk::Orientation::Vertical)
-        .margin_start(2 * MARGIN)
-        .margin_end(2 * MARGIN)
-        .margin_top(MARGIN)
-        .margin_bottom(MARGIN)
+        .spacing(PADDING_SIZE)
+        .margin_top(PADDING_SIZE)
+        .margin_bottom(PADDING_SIZE)
+        .margin_start(PADDING_SIZE)
+        .margin_end(PADDING_SIZE)
         .build();
 
-    let window = ApplicationWindow::builder()
-        .application(app)
-        .title("uchoose")
-        .child(&vbox)
-        .build();
-
-    // let url_label = gtk::Label::new(Some(url));
     let url_label = gtk::Label::builder()
         .label(url)
-        .margin_bottom(MARGIN)
+        .selectable(true) // Set windows focus latter to avoid starting selected
+        .margin_top(PADDING_SIZE)
+        .margin_bottom(PADDING_SIZE)
+        .margin_start(PADDING_SIZE)
+        .margin_end(PADDING_SIZE)
         .build();
     vbox.append(&url_label);
 
-    for (i, entry) in browser_list.iter().enumerate() {
-        let label = gtk::Label::new(Some(std::borrow::Borrow::borrow(&entry.name)));
+    let icon_theme = gtk::IconTheme::default();
 
-        let btn = gtk::Button::builder()
+    for (idx_btn, entry) in browser_list.iter().enumerate() {
+        let label = gtk::Label::new(Some(&entry.name));
+
+        let icon = gtk::Image::builder()
             .icon_name(entry.icon.to_owned())
-            .label(entry.name.to_owned())
-            .has_frame(true)
-            .margin_top(8)
-            .margin_bottom(8)
+            .icon_size(gtk::IconSize::Large)
             .build();
 
-        // let win = &window;
-        // let res = Rc::clone(&result);
+        let btn_box = gtk::Box::builder()
+            .orientation(gtk::Orientation::Horizontal)
+            .spacing(PADDING_SIZE)
+            .build();
+        btn_box.append(&icon);
+        btn_box.append(&label);
+
+        let btn_tooltip_text = match &entry.action {
+            EntryAction::Exec(s) => s,
+            _ => &String::new(),
+        };
+        let is_default: bool = idx_btn == default_option;
+
+        let btn = gtk::Button::builder()
+            .child(&btn_box)
+            .tooltip_text(btn_tooltip_text)
+            .receives_default(is_default)
+            .build();
+
+        vbox.append(&btn);
+
+        // Select the default option to remove the selection from url_label
+        if idx_btn == default_option {
+            gtk::prelude::GtkWindowExt::set_focus(&window, Some(&btn));
+        }
+
         btn.connect_clicked(clone!(
             #[strong]
             window,
             move |_btn| {
-                println!("<BUTTON PRESSED> {}", i);
-                set_result(Some(i as ChoiceIndex));
+                println!("<BUTTON PRESSED> {}", idx_btn);
+                set_result(Some(idx_btn as ChoiceIndex));
                 window.destroy();
             }
         ));
-
-        vbox.append(&btn);
     }
 
+    window.set_child(Some(&vbox));
     window.present();
+}
+
+fn window_exit_on_esc(window: &gtk::ApplicationWindow) {
+    // Close when press esc
+    let event_controler = gtk::EventControllerKey::new();
+    event_controler.connect_key_pressed(clone!(
+        #[strong]
+        window,
+        move |this: &gtk::EventControllerKey,
+              keyval: gtk::gdk::Key,
+              keycode: u32,
+              state: gtk::gdk::ModifierType| {
+            if keyval == gtk::gdk::Key::Escape {
+                println!("ESC");
+                window.destroy();
+                return gtk::glib::Propagation::Stop;
+            }
+            gtk::glib::Propagation::Proceed
+        },
+    ));
+    window.add_controller(event_controler);
 }
