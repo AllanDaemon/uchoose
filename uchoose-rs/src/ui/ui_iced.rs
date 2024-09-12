@@ -1,11 +1,21 @@
+#![allow(dead_code)]
+#![allow(unused)]
+
 use super::{Choice, ChoiceIndex};
 use crate::providers::BrowserEntry;
 
 use iced::widget::{button, column, text, Column};
 use iced::Center;
 
+/* NOT IMPLEMENTED
+
+I give up on using ICED by now. Too hard, but it's still in heavy development and unstable.
+Maybe revisit it after 1.0 is released
+ */
+
 pub fn chooser(url: &str, browser_list: &Vec<BrowserEntry>, default_option: ChoiceIndex) -> Choice {
     println!("Iced Open: {}", url);
+    unimplemented!();
 
     // let result = Rc::new(RefCell::new(None));
 
@@ -16,9 +26,11 @@ pub fn chooser(url: &str, browser_list: &Vec<BrowserEntry>, default_option: Choi
     //     result: Rc::clone(&result),
     // };
 
+    let app = iced::application("uChoose", UchooseApp::update, UchooseApp::view);
+
     println!("App will run");
-    let iced_result: iced::Result = iced::run("uChoose", UchooseApp::update, UchooseApp::view);
-    println!("App ran out\n");
+    let iced_result: iced::Result = app.run_with(UchooseApp::new);
+    println!("App ran out\niced_result = {iced_result:#?}\n");
 
     // return *result.borrow();
     None
@@ -28,11 +40,20 @@ pub fn chooser(url: &str, browser_list: &Vec<BrowserEntry>, default_option: Choi
 struct UchooseApp {}
 
 #[derive(Debug)]
-struct UchooseMessage {}
+enum UchooseMessage {
+    Increment,
+}
 
-fn update(&mut self, message: UchooseMessage) {}
 impl UchooseApp {
+    fn new() -> (Self, iced::Task<UchooseMessage>) {
+        (UchooseApp {}, iced::Task::none())
+    }
+
+    fn update(&mut self, message: UchooseMessage) {}
+
     fn view(&self) -> Column<UchooseMessage> {
-        column![]
+        let url_label = text("URL").size(50);
+
+        column![url_label]
     }
 }

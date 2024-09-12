@@ -24,7 +24,7 @@ iced = { git = "https://github.com/iced-rs/iced.git", branch = "master", optiona
 
 
 [features]
-default = ["xclip", "arboard", "gtk4", "relm4", "iced"]
+default = ["xclip", "arboard", "gtk4", "relm4"]
 
 xclip = ["dep:shlex"]
 arboard = ["dep:arboard"]
