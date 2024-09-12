@@ -7,7 +7,6 @@
 
 ## UI
 
-* Finish gtk4
-* Refactor out commmon between gtk and relm
-* Iced
+* ~~Iced~~ (Gave up, at least until iced 1.0)
 * Ratatui
+* Tui-Realm
