@@ -17,3 +17,5 @@ pub mod ui_iced;
 pub mod ui_ratatui;
 #[cfg(feature = "relm4")]
 pub mod ui_relm4;
+#[cfg(feature = "tui_realm")]
+pub mod ui_tui_realm;

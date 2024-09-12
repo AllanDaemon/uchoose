@@ -23,6 +23,8 @@ pub enum UI {
     Iced,
     #[cfg(feature = "ratatui")]
     Ratatui,
+    #[cfg(feature = "tui_realm")]
+    TuiRealm,
     TestProviders,
 }
 
@@ -86,6 +88,11 @@ pub struct Cli {
     #[arg(help = "Same as --ui ratatui")]
     ratatui: bool,
 
+    #[cfg(feature = "tui_realm")]
+    #[arg(short, long)]
+    #[arg(help = "Same as --ui tui_realm")]
+    tui_realm: bool,
+
     #[arg(short, long)]
     #[arg(help = "Do not execute the selected command (dry run for debug)")]
     no_exec: bool,
@@ -121,6 +128,10 @@ fn setup_cli_args() -> Cli {
     #[cfg(feature = "ratatui")]
     if cli.ratatui {
         cli.ui = UI::Ratatui;
+    }
+    #[cfg(feature = "tui_realm")]
+    if cli.tui_realm {
+        cli.ui = UI::TuiRealm;
     }
 
     println!("\tUI: {:?}", cli.ui);
@@ -169,6 +180,14 @@ fn main() {
         UI::Ratatui => {
             return execution::choose_and_execute(
                 ui::ui_ratatui::chooser,
+                cli_args.url,
+                cli_args.default_option,
+            )
+        }
+        #[cfg(feature = "tui_realm")]
+        UI::TuiRealm => {
+            return execution::choose_and_execute(
+                ui::ui_tui_realm::chooser,
                 cli_args.url,
                 cli_args.default_option,
             )

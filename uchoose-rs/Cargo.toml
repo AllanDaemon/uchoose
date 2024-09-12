@@ -38,4 +38,5 @@ iced = ["dep:iced"]
 gui_all = ["gtk4", "relm4", "iced"]
 
 ratatui = ["dep:ratatui"]
-tui_all = ["ratatui"]
+tui_realm = []
+tui_all = ["ratatui", "tui_realm"]
