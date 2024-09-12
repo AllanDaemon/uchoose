@@ -8,9 +8,9 @@ use relm4::{prelude::*, RelmObjectExt};
 use super::{Choice, ChoiceIndex};
 use crate::get_cli_args;
 use crate::providers::{BrowserEntry, EntryAction};
+use crate::ui::ui_gtk4::get_padding_size;
 
 const APP_ID: &str = "gg.allan.uchoose.rs.relm4";
-const PADDING_SIZE: i32 = 12;
 
 struct UchooseApp {
     result: Rc<RefCell<Choice>>, // The way to get write the result back to us
@@ -79,8 +79,7 @@ impl SimpleComponent for UchooseApp {
             result: init_params.result,
         };
 
-        let ui_scale = get_cli_args().ui_scale;
-        let padding_size: i32 = (PADDING_SIZE as f64 * ui_scale) as i32;
+        let padding_size: i32 = get_padding_size();
 
         let url_label = gtk::Label::new(Some(&init_params.url));
         url_label.set_margin_all(padding_size);

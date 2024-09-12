@@ -13,7 +13,7 @@ use crate::get_cli_args;
 use crate::providers::{BrowserEntry, EntryAction};
 
 const APP_ID: &str = "gg.allan.uchoose.rs.gkt4";
-const PADDING_SIZE: i32 = 12;
+const DEFAULT_PADDING_SIZE: i32 = 12;
 
 // Where to save the user choice. It's already is setup to default none (no action)
 static mut RESULT: Choice = None;
@@ -58,8 +58,7 @@ fn build_uchoose(
     browser_list: &Vec<BrowserEntry>,
     default_option: ChoiceIndex,
 ) {
-    let ui_scale = get_cli_args().ui_scale;
-    let padding_size: i32 = (PADDING_SIZE as f64 * ui_scale) as i32;
+    let padding_size = get_padding_size();
 
     let window: ApplicationWindow = ApplicationWindow::builder()
         .application(app)
@@ -157,6 +156,8 @@ fn window_exit_on_esc(window: &gtk::ApplicationWindow) {
     window.add_controller(event_controler);
 }
 
+// Shared helpers
+
 pub fn set_scale(win: &gtk::ApplicationWindow, scale: f64) {
     // Get settings and set scale
     let settings = win.settings();
@@ -166,4 +167,10 @@ pub fn set_scale(win: &gtk::ApplicationWindow, scale: f64) {
     settings.set_gtk_xft_dpi(new_dpi);
 
     // println!("gtk-xft-dpi: {:#?} ({}*1024)", curr_dpi, curr_dpi / 1024);
+}
+
+pub fn get_padding_size() -> i32 {
+    let ui_scale = get_cli_args().ui_scale;
+    let padding_size: i32 = (DEFAULT_PADDING_SIZE as f64 * ui_scale) as i32;
+    padding_size
 }
