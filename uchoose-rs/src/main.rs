@@ -1,7 +1,3 @@
-//TODO FIX
-#![allow(dead_code)]
-#![allow(unused)]
-
 use std::sync::{Arc, Mutex};
 
 use clap::{Parser, ValueEnum};
