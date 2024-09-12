@@ -21,6 +21,8 @@ pub enum UI {
     Relm,
     #[cfg(feature = "iced")]
     Iced,
+    #[cfg(feature = "ratatui")]
+    Ratatui,
     TestProviders,
 }
 
@@ -79,6 +81,11 @@ pub struct Cli {
     #[arg(help = "Same as --ui iced")]
     iced: bool,
 
+    #[cfg(feature = "ratatui")]
+    #[arg(long)]
+    #[arg(help = "Same as --ui ratatui")]
+    ratatui: bool,
+
     #[arg(short, long)]
     #[arg(help = "Do not execute the selected command (dry run for debug)")]
     no_exec: bool,
@@ -110,6 +117,10 @@ fn setup_cli_args() -> Cli {
     #[cfg(feature = "iced")]
     if cli.iced {
         cli.ui = UI::Iced;
+    }
+    #[cfg(feature = "ratatui")]
+    if cli.ratatui {
+        cli.ui = UI::Ratatui;
     }
 
     println!("\tUI: {:?}", cli.ui);
@@ -150,6 +161,14 @@ fn main() {
         UI::Iced => {
             return execution::choose_and_execute(
                 ui::ui_iced::chooser,
+                cli_args.url,
+                cli_args.default_option,
+            )
+        }
+        #[cfg(feature = "ratatui")]
+        UI::Ratatui => {
+            return execution::choose_and_execute(
+                ui::ui_ratatui::chooser,
                 cli_args.url,
                 cli_args.default_option,
             )
