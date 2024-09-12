@@ -1,7 +1,7 @@
 #[cfg(feature = "gtk4")]
 use gtk::prelude::DisplayExt; // For GTK clipboard
 
-use crate::providers::{get_browsers_list, BrowserEntry, EntryAction};
+use crate::providers::{get_browsers_list, BrowserEntry, EntryAction, NO_ACTION_ENTRY};
 use crate::ui;
 use crate::{get_cli_args, ClipboardBackend};
 
@@ -17,16 +17,16 @@ pub fn choose_and_execute(chooser: ui::Chooser, url: String, default_option: i32
     } as ui::ChoiceIndex;
 
     let choice = chooser(&url, &browser_list, default_option);
-    if let None = choice {
-        println!("Choosing cancelled. No action will be taken.");
-        return;
-    }
-
-    let entry = browser_list[choice.unwrap()].clone();
-
+    let entry = if let Some(_choice) = choice {
+        browser_list[_choice].clone()
+    } else {
+        // println!("Choosing cancelled. No action will be taken.");
+        NO_ACTION_ENTRY
+    };
     println!("CHOICE: {:?} [{:#?}]", choice, entry);
 
-    // Execute
+    // Execution
+    // Skip if no-exec flag is given
     if get_cli_args().no_exec {
         println!("Skiping execution");
         return;

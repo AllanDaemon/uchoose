@@ -24,6 +24,12 @@ pub struct BrowserEntry {
     pub action: EntryAction,
 }
 
+pub const NO_ACTION_ENTRY: BrowserEntry = BrowserEntry {
+    name: Cow::Borrowed("No Action"),
+    icon: Cow::Borrowed("action-unavailable-symbolic"),
+    action: EntryAction::None,
+};
+
 pub const CLIPBOARD_ENTRY: BrowserEntry = BrowserEntry {
     name: Cow::Borrowed("Copy to clipboard"),
     icon: Cow::Borrowed("edit-copy-symbolic"),
