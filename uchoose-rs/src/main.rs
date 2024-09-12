@@ -151,7 +151,13 @@ fn main() {
             )
         }
         #[cfg(feature = "iced")]
-        UI::Iced => unimplemented!(),
+        UI::Iced => {
+            return execution::choose_and_execute(
+                ui::ui_iced::chooser,
+                cli_args.url,
+                cli_args.default_option,
+            )
+        }
         UI::TestProviders => return providers::main_dev(),
     }
 }
