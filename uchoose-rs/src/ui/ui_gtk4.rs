@@ -1,12 +1,9 @@
 // Needs to install libraries in the system too
 // Check: https://gtk-rs.org/gtk4-rs/stable/latest/book/installation_linux.html
 
-use std::cell::RefCell;
-use std::rc::Rc;
-
 use gtk::glib::clone;
 use gtk::prelude::*;
-use gtk::{glib, Application, ApplicationWindow};
+use gtk::{Application, ApplicationWindow};
 
 use super::{Choice, ChoiceIndex};
 use crate::get_cli_args;
@@ -26,9 +23,6 @@ fn set_result(choice: Choice) {
     unsafe { RESULT = choice };
 }
 
-#[derive(Debug)]
-struct ChoiceResult(Option<Choice>);
-
 pub fn chooser(url: &str, browser_list: &Vec<BrowserEntry>, default_option: ChoiceIndex) -> Choice {
     println!("GTK4 Open: {}", url);
 
@@ -39,7 +33,7 @@ pub fn chooser(url: &str, browser_list: &Vec<BrowserEntry>, default_option: Choi
         browser_list,
         #[to_owned]
         url,
-        move |app| { build_uchoose(app, &url, &browser_list, default_option) }
+        move |app| build_uchoose(app, &url, &browser_list, default_option)
     ));
 
     println!("App run");
@@ -141,10 +135,10 @@ fn window_exit_on_esc(window: &gtk::ApplicationWindow) {
     event_controler.connect_key_pressed(clone!(
         #[strong]
         window,
-        move |this: &gtk::EventControllerKey,
+        move |_this: &gtk::EventControllerKey,
               keyval: gtk::gdk::Key,
-              keycode: u32,
-              state: gtk::gdk::ModifierType| {
+              _keycode: u32,
+              _state: gtk::gdk::ModifierType| {
             if keyval == gtk::gdk::Key::Escape {
                 println!("ESC");
                 window.destroy();

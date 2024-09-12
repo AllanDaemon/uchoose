@@ -3,7 +3,7 @@ use std::rc::Rc;
 
 use gtk::glib::clone;
 use gtk::prelude::*;
-use relm4::{prelude::*, RelmObjectExt};
+use relm4::prelude::*;
 
 use super::{Choice, ChoiceIndex};
 use crate::get_cli_args;
@@ -35,7 +35,7 @@ pub fn chooser(url: &str, browser_list: &Vec<BrowserEntry>, default_option: Choi
 
     let result = Rc::new(RefCell::new(None));
 
-    let mut choose_params: UchooseParams = UchooseParams {
+    let choose_params: UchooseParams = UchooseParams {
         url: url.to_string(),
         browser_list: browser_list.clone(),
         default_option: default_option.clone(),
@@ -154,8 +154,6 @@ impl SimpleComponent for UchooseApp {
         *self.result.borrow_mut() = choice;
         relm4::main_application().quit();
     }
-
-    fn update_view(&self, widgets: &mut Self::Widgets, _sender: ComponentSender<Self>) {}
 }
 
 fn chooser_connect_cancel(sender: ComponentSender<UchooseApp>, window: gtk::ApplicationWindow) {
@@ -164,10 +162,10 @@ fn chooser_connect_cancel(sender: ComponentSender<UchooseApp>, window: gtk::Appl
     event_controler.connect_key_pressed(clone!(
         #[strong]
         sender,
-        move |this: &gtk::EventControllerKey,
+        move |_this: &gtk::EventControllerKey,
               keyval: gtk::gdk::Key,
-              keycode: u32,
-              state: gtk::gdk::ModifierType| {
+              _keycode: u32,
+              _state: gtk::gdk::ModifierType| {
             if keyval == gtk::gdk::Key::Escape {
                 println!("ESC");
                 sender.input(InputMsg::Cancelled);

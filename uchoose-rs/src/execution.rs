@@ -51,7 +51,8 @@ fn execute_clipboad(url: &str, clipboard_backend: ClipboardBackend) {
     match clipboard_backend {
         #[cfg(feature = "xclip")]
         ClipboardBackend::Xclip => {
-            crate::clipboard_xclip::clipboard_set_text(url);
+            crate::clipboard_xclip::clipboard_set_text(url)
+                .expect("Error coping to clipboard using xclip");
         }
         #[cfg(feature = "arboard")]
         ClipboardBackend::Arboard => {
