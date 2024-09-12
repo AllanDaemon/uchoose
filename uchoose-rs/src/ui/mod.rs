@@ -11,5 +11,7 @@ pub mod ui_cli;
 
 #[cfg(feature = "gtk4")]
 pub mod ui_gtk4;
+#[cfg(feature = "iced")]
+pub mod ui_iced;
 #[cfg(feature = "relm4")]
 pub mod ui_relm4;
