@@ -1,5 +1,6 @@
 ## Features
 
+* Wrap long urls
 * Support config file
 * Support priority in the ordering
 * Support manual exclusion of entries
